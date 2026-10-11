@@ -17,6 +17,6 @@ Read the next unresolved phase, current source/specification, open operations, i
 | Read a specific journal entry | `--task-id task-id --record e000001` |
 | Structured output | `--format json` |
 
-Read every numbered excerpt. Continue with `--page N --context-id DIGEST` and the same selection; changed input requires restarting. Excerpts omit nothing. There are no transition IDs or repeated state snapshots. The helper reads pinned task definitions and performs no writes or adapter calls. Ordinary read-only inspection cites evidence directly; operation records cover execution claims or interruption recovery.
+Ordinary context is returned together, up to 8,000 characters. Larger views use numbered excerpts; read all pages. Continue with `--page N --context-id DIGEST` and the same selection; changed input requires restarting. Excerpts omit nothing. There are no transition IDs or repeated state snapshots. The helper reads pinned task definitions and performs no writes or adapter calls. Ordinary read-only inspection cites evidence directly; operation records cover execution claims or interruption recovery.
 
 Requires Python 3.11+ and supplied dependencies. If unavailable, use an equivalent strict local parser or record the limitation; withhold dependent claims. Exit 0 means context was read, 1 means issues remain, and 2 means unavailable. 

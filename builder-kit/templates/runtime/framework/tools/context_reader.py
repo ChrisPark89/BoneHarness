@@ -125,8 +125,8 @@ def extract_context(repo_root, harness_root='.harness', *, situation='developmen
     return result
 
 
-def context_page(context, page=1, *, expected_context_id=None, limit=2400):
-    """Bound excerpts of the parsed, relevant view; never silently drop content."""
+def context_page(context, page=1, *, expected_context_id=None, limit=8000):
+    """Keep ordinary context together; paginate large views without dropping content."""
     token = context.get('context_id') or content_identity(canonical_json(context))
     if expected_context_id is not None and expected_context_id != token:
         raise ValueError('STALE_CONTEXT: restart at page 1')

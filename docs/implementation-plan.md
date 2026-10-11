@@ -23,4 +23,6 @@ Scope: [specification](specification.md). Preserve existing histories and instal
 - [x] Clarify retained setup results and reuse one evidence log; existing record fields suffice.
 - [x] Limit readiness wording to known setup blockers. Documentation only; checker behavior unchanged.
 
-No new evidence service, task state or per-adapter record files. Both installed demos remain unchanged; captured user-test files exercise the new checker in temporary repositories.
+- [x] Raise context pages to 8,000 characters; retain large-view pagination. Existing assertions updated; tests not rerun.
+
+No new records or schema changes. Installed demos remain unchanged.

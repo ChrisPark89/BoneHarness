@@ -313,12 +313,12 @@ class InstallationTests(unittest.TestCase):
         context = json.loads(result.stdout)
         self.assertEqual('2.0.0', context['context_version'])
         self.assertIn('configuration_id', context['excerpt'])
-        self.assertGreaterEqual(context['pages'], 1)
-        self.assertLessEqual(len(context['excerpt']), 2400)
+        self.assertEqual(context['pages'], 1)
+        self.assertLessEqual(len(context['excerpt']), 8000)
         self.assertEqual(before, {p:p.read_bytes() for p in self.repo.rglob('*') if p.is_file()})
 
     def test_long_context_has_explicit_bounded_continuation(self):
-        profile = self.profile(); profile['adapters']['test']['reason'] = 'A long discovered reason. ' * 300
+        profile = self.profile(); profile['adapters']['test']['reason'] = 'A long discovered reason. ' * 1000
         self.save_profile(profile)
         first = json.loads(self.context('--situation', 'setup').stdout)
         self.assertGreater(first['pages'], 1)
@@ -327,7 +327,7 @@ class InstallationTests(unittest.TestCase):
             result = self.context('--situation', 'setup', '--page', str(number), '--context-id', first['context_id'])
             self.assertEqual(0, result.returncode, result.stderr + result.stdout)
             page = json.loads(result.stdout)
-            self.assertLessEqual(len(page['excerpt']), 2400)
+            self.assertLessEqual(len(page['excerpt']), 8000)
             pieces.append(page['excerpt'])
         parsed = json.loads(''.join(pieces))
         self.assertEqual(profile['adapters']['test']['reason'], parsed['adapters']['test']['reason'])

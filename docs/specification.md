@@ -14,7 +14,7 @@
 | Completion | Derive from accepted criteria, current source evidence, resolved phases and no uncertain operation. |
 | Recovery | Preserve failures and unfinished work. Inspect uncertain tool activity before retrying. |
 | Maintenance | Check compatibility, retain previous configuration, publish changes and refresh setup status. |
-| Reading | Human pages ≤200 words and support a decision. LLM guides are sequential; parsers select relevant structured records. |
+| Reading | Summaries ≤200 words. Sequential guides; parsed context stays together up to 8,000 characters; larger views paginate completely. |
 
 ## Minimal records
 
