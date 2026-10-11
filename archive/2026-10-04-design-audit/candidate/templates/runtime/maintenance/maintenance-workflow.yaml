@@ -1,0 +1,140 @@
+# Installed harness-maintenance workflow. This file governs harness updates only.
+# It is separate from ../development/workflow.yaml, which governs normal development tasks.
+
+workflow_version: 1
+entry_state: REQUESTED
+completion_state: COMPLETE
+stop_states: [REJECTED, PENDING, HUMAN_REQUIRED, FAILED]
+
+request_types:
+  adapter_add_or_swap: ADAPTER_COMPATIBLE
+  repository_fact_correction: SOURCE_VERIFIED
+  repository_drift_review: DRIFT_ASSESSED
+
+states:
+  - REQUESTED
+  - INSPECTED
+  - PLANNED
+  - STAGED
+  - ADAPTER_COMPATIBLE
+  - SOURCE_VERIFIED
+  - DRIFT_ASSESSED
+  - PROMOTED
+  - STATUS_UPDATED
+  - COMPLETE
+  - REJECTED
+  - PENDING
+  - HUMAN_REQUIRED
+  - FAILED
+
+transitions:
+  - id: M-01
+    from: REQUESTED
+    to: INSPECTED
+    requires: [request_type, request_summary, update_record_path]
+    verifier: request_classification
+  - id: M-02
+    from: INSPECTED
+    to: PLANNED
+    requires: [base_revision, active_binding_or_fact, inspected_evidence, affected_capability_or_fact]
+    verifier: read_only_inspection
+  - id: M-03
+    from: PLANNED
+    to: STAGED
+    requires: [smallest_scope_plan, candidate_source, before_binding, proposed_binding, permissions_and_side_effects, rollback_reference]
+    verifier: staging_scope_check
+  - id: M-04
+    from: STAGED
+    to: ADAPTER_COMPATIBLE
+    when: request_type == adapter_add_or_swap and adapter_result_present_and_well_formed and all_required_result_fields_present_and_valid and adapter_result_status != UNKNOWN
+    requires: [declared_capability, adapter_identity, supported_interface_version, required_result_fields, status_mapping, evidence_reference, failure_behavior, permissions_check]
+    verifier: adapter_compatibility_check
+  - id: M-05
+    from: STAGED
+    to: REJECTED
+    when: request_type == adapter_add_or_swap and compatibility_check_failed
+    requires: [compatibility_findings, before_binding, update_record_path]
+    verifier: active_binding_unchanged_check
+  - id: M-06
+    from: STAGED
+    to: SOURCE_VERIFIED
+    when: request_type == repository_fact_correction
+    requires: [affected_fact, authoritative_source_reference, corrected_value]
+    verifier: source_verification
+  - id: M-07
+    from: STAGED
+    to: DRIFT_ASSESSED
+    when: request_type == repository_drift_review
+    requires: [watched_source_references, drift_assessment, update_record_path]
+    verifier: drift_evidence_review
+  - id: M-08
+    from: ADAPTER_COMPATIBLE
+    to: PROMOTED
+    when: same_capability_scope and supported_interface_preserved and no_permission_expansion
+    requires: [same_capability_scope, supported_interface_preserved, no_permission_expansion, before_binding, proposed_binding, rollback_reference]
+    verifier: promotion_policy
+  - id: M-09
+    from: SOURCE_VERIFIED
+    to: PROMOTED
+    requires: [promotion_policy_passed, authoritative_source_reference, rollback_reference]
+    verifier: promotion_policy
+  - id: M-10
+    from: DRIFT_ASSESSED
+    to: PROMOTED
+    when: drift_requires_accepted_update
+    requires: [promotion_policy_passed, proposed_change, rollback_reference]
+    verifier: promotion_policy
+  - id: M-11
+    from: DRIFT_ASSESSED
+    to: STATUS_UPDATED
+    when: no_change_found
+    requires: [watched_source_references, no_change_evidence, update_record_path]
+    verifier: no_change_drift_closeout
+  - id: M-12
+    from: PROMOTED
+    to: STATUS_UPDATED
+    requires: [promotion_result, canonical_profile_or_status_update, update_record_path]
+    verifier: canonical_status_update
+  - id: M-13
+    from: STATUS_UPDATED
+    to: COMPLETE
+    requires: [append_only_update_record, resulting_status, rollback_reference]
+    verifier: record_completion
+
+routes:
+  unknown_or_malformed_adapter_result:
+    from: STAGED
+    to: PENDING
+    requires:
+      adapter_result_status: UNKNOWN
+      result_format: ABSENT_OR_MALFORMED
+      resolution_needed: PENDING
+      update_record_path: PENDING
+  evidence_unavailable:
+    to: PENDING
+    requires: [missing_evidence, resolution_needed, update_record_path]
+  policy_or_authorization_decision_needed:
+    to: HUMAN_REQUIRED
+    requires: [decision_needed, before_binding, proposed_binding, update_record_path]
+  interface_permission_or_workflow_change:
+    from: [ADAPTER_COMPATIBLE, SOURCE_VERIFIED, DRIFT_ASSESSED]
+    to: HUMAN_REQUIRED
+    requires: [change_description, compatibility_or_policy_findings, human_approval_required, update_record_path]
+  promotion_failure:
+    to: FAILED
+    requires: [promotion_failure_evidence, restored_before_binding, rollback_reference, update_record_path]
+
+resumption:
+  PENDING:
+    to: INSPECTED
+    requires: [newly_available_evidence]
+  HUMAN_REQUIRED:
+    to: PLANNED
+    requires: [recorded_human_approval]
+
+invariants:
+  - "Stage candidates without replacing the active binding."
+  - "A rejected candidate leaves the previous active binding unchanged."
+  - "A failed promotion restores the recorded previous active binding."
+  - "A no-change drift review reaches STATUS_UPDATED without promotion."
+  - "Adapter compatibility checks only the declared interface, required fields, status mapping, evidence reference, failure behavior, and permissions."

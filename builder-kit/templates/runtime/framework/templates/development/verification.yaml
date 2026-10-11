@@ -1,0 +1,18 @@
+action: phase
+phase: specification_verification
+status: PASS
+summary: Reviewed every accepted requirement against current scoped source and evidence.
+evidence:
+  - reference: {kind: LOCAL, scope: HARNESS, path: artifacts/development/TASK/verification-evidence.txt}
+    provenance: REVIEW
+    summary: Final criterion-by-criterion review.
+criteria:
+  - criterion_id: acceptance-1
+    result: PASS
+    method: REVIEW
+    reason: Explain how the accepted requirement is met.
+    evidence:
+      - reference: {kind: LOCAL, scope: HARNESS, path: artifacts/development/TASK/verification-evidence.txt}
+        provenance: REVIEW
+        summary: Specific supporting review.
+    # For EXECUTION, also specify operation: actual-successful-operation-id.

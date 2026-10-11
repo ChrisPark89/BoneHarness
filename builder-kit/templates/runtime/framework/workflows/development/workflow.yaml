@@ -1,0 +1,38 @@
+schema_version: 2.0.0
+record_type: Workflow
+phases:
+- id: initialization
+  label: Task initialization
+- id: research
+  label: Research
+- id: pattern_review
+  label: Pattern review
+- id: specification
+  label: Specification acceptance
+  mandatory: true
+- id: verification_plan
+  label: Verification plan
+- id: implementation_plan
+  label: Implementation plan
+- id: implementation
+  label: Implementation
+  source_sensitive: true
+- id: preflight
+  label: Preflight
+  proof: EXECUTION
+  source_sensitive: true
+- id: build
+  label: Build
+  proof: EXECUTION
+  source_sensitive: true
+- id: testing
+  label: Testing
+  proof: EXECUTION
+  source_sensitive: true
+- id: specification_verification
+  label: Final specification verification
+  mandatory: true
+  source_sensitive: true
+- id: final_review
+  label: Final review
+  source_sensitive: true

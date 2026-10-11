@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$defs": {
+    "ContentIdentity": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "Reference": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "const": "LOCAL"
+        },
+        "scope": {
+          "enum": [
+            "HARNESS",
+            "REPOSITORY"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entry_id": {
+          "type": "string",
+          "pattern": "^e[0-9]{6,}$"
+        }
+      },
+      "required": [
+        "kind",
+        "scope",
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "Evidence": {
+      "type": "object",
+      "properties": {
+        "reference": {
+          "$ref": "common.schema.json#/$defs/Reference"
+        },
+        "identity": {
+          "$ref": "common.schema.json#/$defs/ContentIdentity"
+        },
+        "provenance": {
+          "enum": [
+            "REVIEW",
+            "EXECUTION",
+            "FIXTURE"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "reference",
+        "identity",
+        "provenance",
+        "summary"
+      ],
+      "additionalProperties": false
+    },
+    "Approval": {
+      "type": "object",
+      "properties": {
+        "instruction": {
+          "$ref": "common.schema.json#/$defs/Evidence"
+        },
+        "message_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "user": {
+          "type": "string",
+          "minLength": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "instruction",
+        "user",
+        "quote",
+        "review"
+      ],
+      "additionalProperties": false
+    },
+    "SourceScope": {
+      "type": "object",
+      "properties": {
+        "roots": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "exclude": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        }
+      },
+      "required": [
+        "roots",
+        "exclude"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

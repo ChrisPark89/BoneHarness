@@ -1,0 +1,99 @@
+# Review package: 7146d47f7a81940a8b030826e807da6a4cc167f6..HEAD
+
+## Commits
+df15524 Separate runtime development and shared templates
+
+## Files changed
+ .../2026-10-03-harness-maintenance/task-1-report.md | 21 +++++++++++++++++++++
+ .../templates/runtime/{ => development}/HARNESS.md  |  6 +++---
+ .../runtime/{ => development}/task-spec.md          |  0
+ .../runtime/{ => development}/workflow.yaml         |  0
+ .../runtime/{ => shared}/harness-status.md          |  0
+ .../runtime/{ => shared}/repo-profile.yaml          |  0
+ .../runtime/{ => shared}/skill-contract.md          |  0
+ 7 files changed, 24 insertions(+), 3 deletions(-)
+
+## Diff
+diff --git a/.superpowers/sdd/2026-10-03-harness-maintenance/task-1-report.md b/.superpowers/sdd/2026-10-03-harness-maintenance/task-1-report.md
+new file mode 100644
+index 0000000..2a91e18
+--- /dev/null
++++ b/.superpowers/sdd/2026-10-03-harness-maintenance/task-1-report.md
+@@ -0,0 +1,21 @@
++# Task 1 Report: Separate runtime templates
++
++## Implemented
++
++Moved the three normal development templates into `templates/runtime/development/` and the three canonical shared definitions into `templates/runtime/shared/`. Updated `development/HARNESS.md` references to point at the shared definitions and same-folder development templates using the new relative layout. No maintenance templates or maintenance-only workflow states were introduced.
++
++## Checks
++
++- File/path consistency script: PASS. Each of the six templates exists exactly once at its requested destination; the shared folder contains only its three canonical definitions; the old flat paths are absent; the development workflow contains no maintenance-only instructions; entry-point references use the new paths.
++- `git diff --cached --check`: PASS.
++- Software tests: not applicable; this is a documentation-only move and the task brief calls for path consistency checks only.
++
++## Files changed
++
++- Renamed `HARNESS.md`, `workflow.yaml`, and `task-spec.md` into `development/`.
++- Renamed `skill-contract.md`, `repo-profile.yaml`, and `harness-status.md` into `shared/`.
++- Updated relative references in `development/HARNESS.md`.
++
++## Self-review / concerns
++
++The relative shared references resolve from the moved development entry point. Git recognizes all six moves, with content preserved apart from the three intended path changes. No concerns.
+diff --git a/agent_harness_builder_kit/templates/runtime/HARNESS.md b/agent_harness_builder_kit/templates/runtime/development/HARNESS.md
+similarity index 81%
+rename from agent_harness_builder_kit/templates/runtime/HARNESS.md
+rename to agent_harness_builder_kit/templates/runtime/development/HARNESS.md
+index 8d0941d..df2818a 100644
+--- a/agent_harness_builder_kit/templates/runtime/HARNESS.md
++++ b/agent_harness_builder_kit/templates/runtime/development/HARNESS.md
+@@ -1,25 +1,25 @@
+ # Installed Repository Harness
+ 
+ This is the task agent's entry point for software work in this repository. Use this generated harness for normal development tasks.
+ 
+ ## Start a task
+ 
+-1. Read harness-status.md and repo-profile.yaml.
++1. Read ../shared/harness-status.md and ../shared/repo-profile.yaml.
+ 2. Read workflow.yaml and the relevant configured skill.
+-3. Create a task record from templates/task-spec.md under the configured run/evidence location.
++3. Create a task record from task-spec.md under the configured run/evidence location.
+ 4. Start at NEW, record the base revision and working-tree state, then follow the configured transitions in order.
+ 5. Before advancing, attach the required evidence and use the transition's named verifier.
+ 
+ ## Operating rules
+ 
+-- This harness is repo-specific. Treat repo-profile.yaml and workflow.yaml as the source of truth for local commands, task types, stage guards, and capability status.
++- This harness is repo-specific. Treat ../shared/repo-profile.yaml and workflow.yaml as the source of truth for local commands, task types, stage guards, and capability status.
+ - Follow the state machine. Do not skip, reorder, or invent transitions.
+ - If a capability is PENDING_DISCOVERY or UNAVAILABLE, stop at its gate as BLOCKED or HUMAN_REQUIRED and record what would resolve it.
+ - A missing command result is UNKNOWN, never PASS. An LLM review is not a build or test result.
+ - Tie build/test evidence to the revision and artifact actually checked. Relevant edits invalidate downstream evidence.
+ - A build/test repair loop may run only when workflow.yaml enables it and its retry policy permits another attempt.
+ - Preserve evidence from failed attempts. Stop when the policy limit is reached or there is no new evidence.
+ - Use this generated repo-specific harness as the task workflow source.
+ 
+ ## Finish
+ 
+diff --git a/agent_harness_builder_kit/templates/runtime/task-spec.md b/agent_harness_builder_kit/templates/runtime/development/task-spec.md
+similarity index 100%
+rename from agent_harness_builder_kit/templates/runtime/task-spec.md
+rename to agent_harness_builder_kit/templates/runtime/development/task-spec.md
+diff --git a/agent_harness_builder_kit/templates/runtime/workflow.yaml b/agent_harness_builder_kit/templates/runtime/development/workflow.yaml
+similarity index 100%
+rename from agent_harness_builder_kit/templates/runtime/workflow.yaml
+rename to agent_harness_builder_kit/templates/runtime/development/workflow.yaml
+diff --git a/agent_harness_builder_kit/templates/runtime/harness-status.md b/agent_harness_builder_kit/templates/runtime/shared/harness-status.md
+similarity index 100%
+rename from agent_harness_builder_kit/templates/runtime/harness-status.md
+rename to agent_harness_builder_kit/templates/runtime/shared/harness-status.md
+diff --git a/agent_harness_builder_kit/templates/runtime/repo-profile.yaml b/agent_harness_builder_kit/templates/runtime/shared/repo-profile.yaml
+similarity index 100%
+rename from agent_harness_builder_kit/templates/runtime/repo-profile.yaml
+rename to agent_harness_builder_kit/templates/runtime/shared/repo-profile.yaml
+diff --git a/agent_harness_builder_kit/templates/runtime/skill-contract.md b/agent_harness_builder_kit/templates/runtime/shared/skill-contract.md
+similarity index 100%
+rename from agent_harness_builder_kit/templates/runtime/skill-contract.md
+rename to agent_harness_builder_kit/templates/runtime/shared/skill-contract.md

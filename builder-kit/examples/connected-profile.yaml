@@ -1,0 +1,30 @@
+# Adapter connections; compatibility is not proof of task success.
+schema_version: "2.0.0"
+repository: example-project
+configuration_id: cfg-1
+adapters:
+  research:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  pattern_search:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  preflight:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  build:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  test:
+    connection: python3 -m unittest discover -s tests
+    status: NOT_ASSESSED
+    reason: Check this repository before use.
+    instructions: Run from repository root; preserve output and failures.
+  final_review:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.

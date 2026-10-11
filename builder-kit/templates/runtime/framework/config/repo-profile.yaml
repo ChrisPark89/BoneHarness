@@ -1,0 +1,29 @@
+# Adapter connections; compatibility is not proof of task success.
+schema_version: "2.0.0"
+repository: example-repository
+configuration_id: cfg-1
+adapters:
+  research:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  pattern_search:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  preflight:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  build:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  test:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.
+  final_review:
+    connection: null
+    status: NOT_CONNECTED
+    reason: Choose an adapter when needed.

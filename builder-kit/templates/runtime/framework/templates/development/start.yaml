@@ -1,0 +1,7 @@
+action: start
+request:
+  reference: {kind: LOCAL, scope: HARNESS, path: artifacts/development/TASK/request.md}
+  provenance: REVIEW
+  summary: Original user request captured with user attribution.
+# Include scope now if research needs an external operation before specification.
+source_scope: {roots: [src], exclude: []}

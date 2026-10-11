@@ -1,0 +1,120 @@
+{
+  "scope": "Saved candidate after Task 3 plus interrupted Task 4 edits; review date 2026-10-04.",
+  "method": "YAML parsing, declared-graph inspection, and explicit traces through named guards.",
+  "limits": [
+    "No installed harness runner exists here.",
+    "No internal LLM, product build, or product test was executed.",
+    "English verifier predicates are not executable semantics; this audit does not invent their implementations.",
+    "PASS means only that the named static check passed; GAP identifies a documented inconsistency, not a measured production failure."
+  ],
+  "counts": {
+    "PASS": 4,
+    "GAP": 6,
+    "UNSPECIFIED": 1
+  },
+  "checks": [
+    {
+      "id": "V-01",
+      "kind": "static",
+      "verdict": "PASS",
+      "observation": "All 4 YAML files parse.",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml",
+        "templates/runtime/maintenance/maintenance-workflow.yaml",
+        "templates/runtime/maintenance/templates/harness-update-record.yaml",
+        "templates/runtime/shared/repo-profile.yaml"
+      ]
+    },
+    {
+      "id": "V-02",
+      "kind": "static",
+      "verdict": "PASS",
+      "observation": "Declared endpoints and IDs: unknown=[], duplicate transition IDs=[].",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-03",
+      "kind": "static",
+      "verdict": "PASS",
+      "observation": "Declared endpoints and IDs: unknown=[], duplicate transition IDs=[].",
+      "evidence": [
+        "templates/runtime/maintenance/maintenance-workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-04",
+      "kind": "static",
+      "verdict": "PASS",
+      "observation": "The preferred main path has declared edges. This does not establish guard executability or result validity.",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-05",
+      "kind": "static",
+      "verdict": "GAP",
+      "observation": "Separate mutable binding declarations exist for: research, pattern_search, preflight, build, test, final_review. No canonical resolution rule is declared in these maps.",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml",
+        "templates/runtime/shared/repo-profile.yaml"
+      ]
+    },
+    {
+      "id": "V-06",
+      "kind": "scenario_trace",
+      "verdict": "GAP",
+      "observation": "BUILD_FAILED, valid FAIL evidence, repair enabled, no attempts remaining: eligible declared transitions=[]. General tool-unavailability routes do not apply to this case.",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-07",
+      "kind": "scenario_trace",
+      "verdict": "GAP",
+      "observation": "TEST_FAILED, valid FAIL evidence, repair enabled, no attempts remaining: eligible declared transitions=[]. General tool-unavailability routes do not apply to this case.",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-08",
+      "kind": "scenario_trace",
+      "verdict": "GAP",
+      "observation": "A well-formed representative UNKNOWN result is excluded by M-04, while the explicit UNKNOWN route requires an absent/malformed result. Structural compatibility and reported outcome need separate verdicts.",
+      "evidence": [
+        "templates/runtime/maintenance/maintenance-workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-09",
+      "kind": "scenario_trace",
+      "verdict": "GAP",
+      "observation": "After recorded human approval for permission expansion, resumption returns to PLANNED. M-08 still requires no_permission_expansion; its guard has no approval alternative.",
+      "evidence": [
+        "templates/runtime/maintenance/maintenance-workflow.yaml"
+      ]
+    },
+    {
+      "id": "V-10",
+      "kind": "static",
+      "verdict": "GAP",
+      "observation": "The structure-completion formula includes I-02..I-12, but the parse/link/transition criterion is I-13.",
+      "evidence": [
+        "installer/installation-checklist.md"
+      ]
+    },
+    {
+      "id": "V-11",
+      "kind": "static",
+      "verdict": "UNSPECIFIED",
+      "observation": "No development resumption section declares how BLOCKED or HUMAN_REQUIRED resumes, reconciles an existing invocation, or revalidates evidence.",
+      "evidence": [
+        "templates/runtime/development/workflow.yaml"
+      ]
+    }
+  ]
+}

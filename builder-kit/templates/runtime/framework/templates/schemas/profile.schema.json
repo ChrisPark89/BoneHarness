@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Repository profile, format 2",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "configuration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapters": {
+      "type": "object",
+      "properties": {
+        "research": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "pattern_search": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "preflight": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "build": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "test": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "final_review": {
+          "$ref": "#/$defs/Adapter"
+        }
+      },
+      "required": [
+        "research",
+        "pattern_search",
+        "preflight",
+        "build",
+        "test",
+        "final_review"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schema_version",
+    "repository",
+    "configuration_id",
+    "adapters"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Adapter": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "NOT_CONNECTED",
+            "NOT_ASSESSED",
+            "COMPATIBLE",
+            "NEEDS_REVIEW",
+            "INCOMPATIBLE"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "connection",
+        "status",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "NOT_CONNECTED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "connection": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "connection": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "COMPATIBLE"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "evidence"
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

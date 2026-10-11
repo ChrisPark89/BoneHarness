@@ -1,0 +1,46 @@
+# Create one append-only record for every maintenance attempt at:
+# maintenance/updates/<update-id>.yaml
+# Replace every PENDING value with an explicit value, UNKNOWN, or PENDING. Do not leave claims blank.
+
+update_id: PENDING
+timestamp: PENDING
+lifecycle_state: REQUESTED
+request:
+  type: PENDING # adapter_add_or_swap | repository_fact_correction | repository_drift_review
+  summary: PENDING
+base_revision: PENDING
+affected:
+  capability: PENDING
+  fact: PENDING
+inspected_evidence:
+  - PENDING
+candidate_source:
+  kind: PENDING
+  reference: PENDING
+  version_or_revision: PENDING
+binding:
+  before: PENDING
+  proposed_after: PENDING
+  resulting_active: PENDING
+checks:
+  adapter_compatibility:
+    result: PENDING
+    adapter_result_status: PENDING # PASS | FAIL | BLOCKED | UNKNOWN
+    result_format: PENDING
+    declared_interface: PENDING
+    required_fields: PENDING
+    status_mapping: PENDING
+    evidence_reference: PENDING
+    failure_behavior: PENDING
+  source_verification:
+    result: PENDING
+    authoritative_source_reference: PENDING
+  drift_assessment:
+    result: PENDING
+    watched_source_references:
+      - PENDING
+permissions_and_side_effects: PENDING
+promotion:
+  result: PENDING
+  resulting_status: PENDING
+rollback_reference: PENDING

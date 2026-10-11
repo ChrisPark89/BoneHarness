@@ -1,0 +1,381 @@
+# Review package: ae7b75a..fa1ebd2
+
+## Commits
+fa1ebd2 Wire adapter result compatibility into runtime templates
+
+## Files changed
+ .../task-3-report.md                               | 27 +++++++++++++++++++
+ .../templates/runtime/development/task-spec.md     |  7 +++++
+ .../templates/runtime/development/workflow.yaml    | 16 +++++++-----
+ .../templates/runtime/shared/harness-status.md     | 19 +++++++-------
+ .../templates/runtime/shared/repo-profile.yaml     | 30 ++++++++++++++++++++++
+ .../templates/runtime/shared/skill-contract.md     | 21 ++++++---------
+ 6 files changed, 92 insertions(+), 28 deletions(-)
+
+## Diff
+diff --git a/.superpowers/sdd/2026-10-03-harness-maintenance/task-3-report.md b/.superpowers/sdd/2026-10-03-harness-maintenance/task-3-report.md
+new file mode 100644
+index 0000000..3b4c897
+--- /dev/null
++++ b/.superpowers/sdd/2026-10-03-harness-maintenance/task-3-report.md
+@@ -0,0 +1,27 @@
++# Task 3 Report: Compatibility and Status Runtime Wiring
++
++## Completed changes
++
++- Updated `shared/skill-contract.md` with the versioned common adapter-result envelope: `interface_version`, `capability`, `adapter`, `run_id`, `task_id`, `revision`, `status`, and `evidence.reference` / `evidence.summary`. It permits capability-specific extension fields and defines only `PASS`, `FAIL`, `BLOCKED`, and `UNKNOWN` as common result statuses.
++- Defined `PASS` as adapter-reported. The contract states that compatibility checks validate result structure and routing, and do not establish report truth or adapter/tool-work accuracy or quality.
++- Updated development build and test transitions to require configured adapter identities and parseable, revision-bound adapter results before passed or failed outcomes. An absent or malformed result is recorded as `UNKNOWN` and routes from `BUILDING` or `TESTING` to `BLOCKED`.
++- Added per-capability active adapter identity, interface version, compatibility state, and last compatibility evidence to `shared/repo-profile.yaml`, plus watched repository sources for drift-prone facts.
++- Renamed the installed readiness label to `Integration readiness`, retaining `NOT_ASSESSED | PARTIAL | READY | BLOCKED`; added per-capability adapter/version and compatibility-evidence columns; and constrained `READY` to interface and policy integration readiness.
++- Added a per-run adapter-evidence table to the development task record with adapter identity/version, run ID, adapter-reported outcome, revision or diff identity, and evidence reference.
++
++## Focused verification
++
++- Parsed `development/workflow.yaml` and `shared/repo-profile.yaml` successfully with Ruby `YAML.load_file`.
++- Ran `git diff --check` with no whitespace errors.
++- Searched all runtime templates for the required interface fields, adapter-result gates, `UNKNOWN` / `BLOCKED` route, lifecycle fields, readiness wording, and compatibility-boundary wording. The search found the required additions and no `Operational readiness` or old `real_build_result` / `real_test_result` gate names.
++
++## Self-review
++
++- The common result envelope contains every required field and allows extension fields without changing the cross-workflow contract.
++- A missing or malformed build/test result cannot satisfy either passed transition because each requires a parseable revision-bound adapter result; it has an explicit `UNKNOWN` to `BLOCKED` route.
++- Compatibility remains limited to interface and routing checks across the shared contract, maintenance workflow, task record, and installed status report.
++- No software tests were run, as directed for this documentation and schema task.
++
++## Concerns
++
++None.
+diff --git a/agent_harness_builder_kit/templates/runtime/development/task-spec.md b/agent_harness_builder_kit/templates/runtime/development/task-spec.md
+index 92efb4a..74c9985 100644
+--- a/agent_harness_builder_kit/templates/runtime/development/task-spec.md
++++ b/agent_harness_builder_kit/templates/runtime/development/task-spec.md
+@@ -60,10 +60,17 @@ Allowed status: PENDING, PASS, FAIL, BLOCKED, NOT_APPLICABLE. A NOT_APPLICABLE r
+ | PREFLIGHT_PASSED → BUILDING |  |  |  |  |
+ | BUILDING → BUILD_PASSED / BUILD_FAILED |  |  |  |  |
+ | BUILD_PASSED → TESTING |  |  |  |  |
+ | TESTING → TEST_PASSED / TEST_FAILED |  |  |  |  |
+ | TEST_PASSED → SPEC_VERIFIED |  |  |  |  |
+ | SPEC_VERIFIED → READY_FOR_REVIEW |  |  |  |  |
+ | READY_FOR_REVIEW → COMPLETE |  |  |  |  |
+ 
+ Do not record PASS before the configured verifier runs and evidence is captured. If an enabled repair loop runs, append each attempt and preserve the failure evidence.
+ 
++## Per-run adapter evidence
++
++Record one row for every adapter result used at a stage gate. Copy the adapter-reported outcome; it is not independently certified by compatibility status. A missing or malformed result is recorded as `UNKNOWN` and routes the task to `BLOCKED`.
++
++| Stage transition | Capability | Adapter identity/version | Run ID | Adapter-reported outcome | Revision or diff identity | Evidence reference |
++|---|---|---|---|---|---|---|
++|  |  |  |  | PASS / FAIL / BLOCKED / UNKNOWN |  |  |
+diff --git a/agent_harness_builder_kit/templates/runtime/development/workflow.yaml b/agent_harness_builder_kit/templates/runtime/development/workflow.yaml
+index 7affd9e..01ab463 100644
+--- a/agent_harness_builder_kit/templates/runtime/development/workflow.yaml
++++ b/agent_harness_builder_kit/templates/runtime/development/workflow.yaml
+@@ -110,31 +110,31 @@ transitions:
+     requires: [preflight_result_fail_or_blocked]
+     verifier: preflight
+   - id: T-11
+     from: PREFLIGHT_FAILED
+     to: HUMAN_REQUIRED
+     requires: [blocking_findings, resolution_needed]
+     verifier: escalation_policy
+   - id: T-12
+     from: PREFLIGHT_PASSED
+     to: BUILDING
+-    requires: [build_binding_configured, build_invocation_record]
++    requires: [build_binding_configured, build_adapter_identity, build_invocation_record]
+     verifier: build_adapter
+   - id: T-13
+     from: BUILDING
+     to: BUILD_PASSED
+-    requires: [real_build_result_pass, current_revision, artifact_identity]
++    requires: [build_binding_configured, parseable_revision_bound_build_adapter_result, build_adapter_reported_status_pass, current_revision, artifact_identity]
+     verifier: build_result_validator
+   - id: T-14
+     from: BUILDING
+     to: BUILD_FAILED
+-    requires: [real_build_result_fail, diagnostics]
++    requires: [build_binding_configured, parseable_revision_bound_build_adapter_result, build_adapter_reported_status_fail_or_blocked, diagnostics]
+     verifier: build_result_validator
+   - id: T-15
+     from: BUILD_FAILED
+     to: REPAIRING
+     when: repair_loops.build.enabled
+     requires: [failure_origin_build, attempts_remaining, new_evidence]
+     verifier: repair_policy
+   - id: T-16
+     from: BUILD_FAILED
+     to: HUMAN_REQUIRED
+@@ -142,31 +142,31 @@ transitions:
+     requires: [failure_record, resolution_needed]
+     verifier: escalation_policy
+   - id: T-17
+     from: REPAIRING
+     to: PREFLIGHT
+     requires: [repair_summary, new_diff_identity, repair_hypothesis]
+     verifier: repair_summary_and_scope_check
+   - id: T-18
+     from: BUILD_PASSED
+     to: TESTING
+-    requires: [test_binding_configured, build_id, test_invocation_record]
++    requires: [test_binding_configured, test_adapter_identity, build_id, test_invocation_record]
+     verifier: test_adapter
+   - id: T-19
+     from: TESTING
+     to: TEST_PASSED
+-    requires: [real_test_result_pass, current_revision, tested_build_id]
++    requires: [test_binding_configured, parseable_revision_bound_test_adapter_result, test_adapter_reported_status_pass, current_revision, tested_build_id]
+     verifier: test_result_validator
+   - id: T-20
+     from: TESTING
+     to: TEST_FAILED
+-    requires: [real_test_result_fail, diagnostics, tested_build_id]
++    requires: [test_binding_configured, parseable_revision_bound_test_adapter_result, test_adapter_reported_status_fail_or_blocked, diagnostics, tested_build_id]
+     verifier: test_result_validator
+   - id: T-21
+     from: TEST_FAILED
+     to: REPAIRING
+     when: repair_loops.test.enabled
+     requires: [failure_origin_test, attempts_remaining, new_evidence]
+     verifier: repair_policy
+   - id: T-22
+     from: TEST_FAILED
+     to: HUMAN_REQUIRED
+@@ -191,20 +191,24 @@ transitions:
+     verifier: final_review
+   - id: T-26
+     from: READY_FOR_REVIEW
+     to: COMPLETE
+     requires: [repo_specific_completion_condition]
+     verifier: completion_policy
+ 
+ failure_routes:
+   unavailable_or_ambiguous_tool_result:
+     to: BLOCKED
++  missing_or_malformed_adapter_result:
++    from: [BUILDING, TESTING]
++    to: BLOCKED
++    requires: [adapter_result_status_UNKNOWN, result_format_absent_or_malformed, resolution_needed]
+ 
+ repair_loops:
+   build:
+     supported: true
+     enabled: false
+     mode: manual # manual | guided | automatic
+     max_attempts: 0
+     route_after_repair: PREFLIGHT
+   test:
+     supported: true
+diff --git a/agent_harness_builder_kit/templates/runtime/shared/harness-status.md b/agent_harness_builder_kit/templates/runtime/shared/harness-status.md
+index 5e39270..cea2d84 100644
+--- a/agent_harness_builder_kit/templates/runtime/shared/harness-status.md
++++ b/agent_harness_builder_kit/templates/runtime/shared/harness-status.md
+@@ -1,43 +1,44 @@
+ # Installed Harness Status
+ 
+ This target-side report describes the generated harness installation and its current operational readiness. It is distinct from any task's current workflow state.
+ 
+ - Target repository/revision: <fill after installation>
+ - Generated harness root: <path>
+ - Runtime entry point: <path>
+ - Structure status: INCOMPLETE | STRUCTURE_COMPLETE
+-- Operational readiness: NOT_ASSESSED | PARTIAL | READY | BLOCKED
++- Integration readiness: NOT_ASSESSED | PARTIAL | READY | BLOCKED
+ - Last assessed by/tool and version: <fill after assessment>
+ - Assessment evidence: <path or report ID>
+ 
++`READY` means interface and policy integration readiness only: required capability bindings are present, interface-compatible, and have safe gate behavior. It does not certify adapter correctness, reliability, or the accuracy or quality of adapter or tool work.
++
+ ## Capability status
+ 
+ Use CONFIGURED, PENDING_DISCOVERY, UNAVAILABLE, or NOT_APPLICABLE. For pending/unavailable items, state the consequence at the task gate and what evidence or decision resolves it.
+ 
+-| Capability | Status | Runtime behavior if needed | Evidence / next step |
+-|---|---|---|---|
+-| Research | PENDING_DISCOVERY | BLOCKED or HUMAN_REQUIRED | |
+-| Pattern search | PENDING_DISCOVERY | BLOCKED or HUMAN_REQUIRED | |
+-| Preflight | PENDING_DISCOVERY | BLOCKED or HUMAN_REQUIRED | |
+-| Build | PENDING_DISCOVERY | BLOCKED or HUMAN_REQUIRED | |
+-| Test | PENDING_DISCOVERY | BLOCKED or HUMAN_REQUIRED | |
++| Capability | Status | Active adapter/version | Compatibility evidence | Runtime behavior if needed | Evidence / next step |
++|---|---|---|---|---|---|
++| Research | PENDING_DISCOVERY |  |  | BLOCKED or HUMAN_REQUIRED | |
++| Pattern search | PENDING_DISCOVERY |  |  | BLOCKED or HUMAN_REQUIRED | |
++| Preflight | PENDING_DISCOVERY |  |  | BLOCKED or HUMAN_REQUIRED | |
++| Build | PENDING_DISCOVERY |  |  | BLOCKED or HUMAN_REQUIRED | |
++| Test | PENDING_DISCOVERY |  |  | BLOCKED or HUMAN_REQUIRED | |
+ 
+ ## Optional repair loops
+ 
+ - Build loop: available / not available; enabled / disabled; policy reference:
+ - Test loop: available / not available; enabled / disabled; policy reference:
+ 
+ ## Unresolved repo questions
+ 
+ | Question | Impact | Evidence/decision needed | Owner/status |
+ |---|---|---|---|
+ |  |  |  |  |
+ 
+ ## Last readiness report
+ 
+ - Required capabilities passing:
+ - Required capabilities pending:
+ - Blockers:
+ - Not-applicable decisions:
+ - Validator/pilot evidence:
+-
+diff --git a/agent_harness_builder_kit/templates/runtime/shared/repo-profile.yaml b/agent_harness_builder_kit/templates/runtime/shared/repo-profile.yaml
+index 8a9f5c1..5b542fc 100644
+--- a/agent_harness_builder_kit/templates/runtime/shared/repo-profile.yaml
++++ b/agent_harness_builder_kit/templates/runtime/shared/repo-profile.yaml
+@@ -29,50 +29,80 @@ knowledge:
+         - "<file, line, command output, or revision>"
+   unknowns:
+     - question: "<unresolved item>"
+       impact: "<affected task stage or PENDING_DISCOVERY>"
+       resolution: "<evidence or human decision needed>"
+ 
+ capabilities:
+   research:
+     status: PENDING_DISCOVERY # CONFIGURED | PENDING_DISCOVERY | UNAVAILABLE | NOT_APPLICABLE
+     adapter: null
++    active_adapter_identity: null
++    interface_version: null
++    compatibility_state: PENDING_DISCOVERY
++    last_compatibility_evidence: null
+     evidence: null
+     on_unavailable: BLOCKED
+   pattern_search:
+     status: PENDING_DISCOVERY
+     adapter: null
++    active_adapter_identity: null
++    interface_version: null
++    compatibility_state: PENDING_DISCOVERY
++    last_compatibility_evidence: null
+     evidence: null
+     on_unavailable: BLOCKED
+   preflight:
+     status: PENDING_DISCOVERY
+     adapter: null
++    active_adapter_identity: null
++    interface_version: null
++    compatibility_state: PENDING_DISCOVERY
++    last_compatibility_evidence: null
+     evidence: null
+     on_unavailable: BLOCKED
+   build:
+     status: PENDING_DISCOVERY
+     adapter: null
++    active_adapter_identity: null
++    interface_version: null
++    compatibility_state: PENDING_DISCOVERY
++    last_compatibility_evidence: null
+     evidence: null
+     artifact_identity: null
+     on_unavailable: BLOCKED
+   test:
+     status: PENDING_DISCOVERY
+     adapter: null
++    active_adapter_identity: null
++    interface_version: null
++    compatibility_state: PENDING_DISCOVERY
++    last_compatibility_evidence: null
+     evidence: null
+     requires_build_artifact: UNKNOWN
+     on_unavailable: BLOCKED
+   final_review:
+     status: PENDING_DISCOVERY
+     adapter: null
++    active_adapter_identity: null
++    interface_version: null
++    compatibility_state: PENDING_DISCOVERY
++    last_compatibility_evidence: null
+     evidence: null
+     on_unavailable: HUMAN_REQUIRED
+ 
++watched_repository_sources:
++  # Sources for repository facts that can drift; maintenance records the latest review evidence.
++  - fact: "<repository fact that can drift>"
++    source: "<authoritative repository path, command, or service reference>"
++    last_checked_evidence: "<maintenance update record or PENDING_DISCOVERY>"
++
+ evidence:
+   store: "<verified path or PENDING_DISCOVERY>"
+   required_identity: [task_id, transition_id, repository_revision, timestamp]
+   redaction_policy: "<verified rule or PENDING_DISCOVERY>"
+   stale_result_rule: "Invalidate downstream evidence after relevant changes."
+ 
+ permissions:
+   filesystem_scope: "<verified scope or PENDING_DISCOVERY>"
+   external_actions: "<verified policy or PENDING_DISCOVERY>"
+   secrets_policy: "<verified policy or PENDING_DISCOVERY>"
+diff --git a/agent_harness_builder_kit/templates/runtime/shared/skill-contract.md b/agent_harness_builder_kit/templates/runtime/shared/skill-contract.md
+index 3b295f1..6b37851 100644
+--- a/agent_harness_builder_kit/templates/runtime/shared/skill-contract.md
++++ b/agent_harness_builder_kit/templates/runtime/shared/skill-contract.md
+@@ -10,56 +10,51 @@ This file describes the contract used by skills in the installed harness. The wo
+ - Implementation type: script / CLI / CI service / MCP tool / LLM procedure / human-run step
+ - Applicable task types:
+ - Configuration status: CONFIGURED / PENDING_DISCOVERY / UNAVAILABLE / NOT_APPLICABLE
+ 
+ ## Inputs and prerequisites
+ 
+ List exact input fields, required artifacts, revision identity, credentials/access requirements, and preconditions. State what happens when a required input is absent.
+ 
+ ## Output contract
+ 
+-Return a structured result that can be stored with task evidence:
++Return a structured result that can be stored with task evidence. Every adapter result uses this versioned common envelope. Capability-specific fields are allowed in addition to these fields.
+ 
+ ~~~yaml
+-status: PASS # PASS | FAIL | BLOCKED | UNKNOWN | NOT_APPLICABLE
++interface_version: 1
+ capability: "<capability name>"
+ adapter: "<adapter name and version>"
+-invocation: "<exact command, request, or procedure>"
++run_id: "<adapter invocation or external run ID>"
++task_id: "<task record ID>"
+ revision: "<revision or diff identity>"
+-started_at: "<timestamp>"
+-finished_at: "<timestamp>"
+-result_id: "<build ID, test run ID, CI ID, or other stable identifier>"
+-artifacts: []
+-diagnostics: []
++status: PASS # PASS | FAIL | BLOCKED | UNKNOWN
+ evidence:
+-  path: "<durable output reference>"
++  reference: "<durable output reference>"
+   summary: "<short factual summary>"
+-limitations: []
+ ~~~
+ 
+-Do not fabricate fields. Use UNKNOWN when the tool does not expose a value. A missing or unreadable result is never PASS.
++`PASS` is adapter-reported. Do not fabricate fields. Use `UNKNOWN` when the tool does not expose a value. A missing, malformed, or unreadable result is recorded as `UNKNOWN` and is never `PASS`.
+ 
+ ## Side effects and permissions
+ 
+ - Files or services read:
+ - Files or services written:
+ - External actions:
+ - Required permissions:
+ - Secret handling:
+ - Output redaction:
+ 
+ ## Failure behavior
+ 
+ Define how the adapter reports non-zero exit or service failure, timeout, cancellation, partial output, warnings, retryability, stale/mismatched revision or artifact, and unavailable credentials/access.
+ 
+ A retry must be authorized by the installed workflow and bounded by its attempt limit.
+ 
+ ## Evidence validation
+ 
+-Specify a separate validator or review procedure. It must check required fields, allowed status values, identity/revision match, durable readable output, required artifacts, and agreement between reported status and actual exit/service result.
++Specify a separate validator or review procedure. It must check the common required fields, allowed status values, identity/revision match, and durable readable evidence reference. Compatibility checks validate structure and routing only; they do not prove the truth of an adapter report or the accuracy or quality of adapter or tool work.
+ 
+ An LLM may interpret diagnostics but cannot upgrade a failed build/test result to pass.
+ 
+ ## Swap acceptance
+ 
+ When replacing this adapter, confirm that the new implementation accepts the same inputs, returns the same output contract, and is accepted by the existing transition validator. No transition should depend on the old vendor-specific adapter name.
+-

@@ -1,0 +1,118 @@
+# Installed repo profile. Normal task agents read this file.
+# PENDING_DISCOVERY and other explicit statuses are not configured bindings.
+
+profile_version: 1
+repository:
+  name: "<verified repository name>"
+  revision_assessed: "<revision or PENDING_DISCOVERY>"
+  instruction_files:
+    - path: "<verified path>"
+      scope: "<verified scope>"
+      evidence: "<source reference>"
+  task_types:
+    # Categories of incoming tasks handled by this installed harness.
+    # These select verification profiles; they do not change the core state order.
+    - id: default
+      description: "<task category or PENDING_DISCOVERY>"
+      recognition_evidence: "<repo evidence or PENDING_DISCOVERY>"
+      verification_profile: default
+  verification_profiles:
+    - id: default
+      additional_acceptance_checks: []
+      evidence: "<source or PENDING_DISCOVERY>"
+
+knowledge:
+  conventions:
+    - claim: "<verified repo rule>"
+      classification: FACT # FACT | INFERENCE | PATTERN | UNKNOWN
+      evidence:
+        - "<file, line, command output, or revision>"
+  unknowns:
+    - question: "<unresolved item>"
+      impact: "<affected task stage or PENDING_DISCOVERY>"
+      resolution: "<evidence or human decision needed>"
+
+capabilities:
+  research:
+    status: PENDING_DISCOVERY # CONFIGURED | PENDING_DISCOVERY | UNAVAILABLE | NOT_APPLICABLE
+    adapter: null
+    active_adapter_identity: null
+    interface_version: null
+    compatibility_state: PENDING_DISCOVERY
+    last_compatibility_evidence: null
+    evidence: null
+    on_unavailable: BLOCKED
+  pattern_search:
+    status: PENDING_DISCOVERY
+    adapter: null
+    active_adapter_identity: null
+    interface_version: null
+    compatibility_state: PENDING_DISCOVERY
+    last_compatibility_evidence: null
+    evidence: null
+    on_unavailable: BLOCKED
+  preflight:
+    status: PENDING_DISCOVERY
+    adapter: null
+    active_adapter_identity: null
+    interface_version: null
+    compatibility_state: PENDING_DISCOVERY
+    last_compatibility_evidence: null
+    evidence: null
+    on_unavailable: BLOCKED
+  build:
+    status: PENDING_DISCOVERY
+    adapter: null
+    active_adapter_identity: null
+    interface_version: null
+    compatibility_state: PENDING_DISCOVERY
+    last_compatibility_evidence: null
+    evidence: null
+    artifact_identity: null
+    on_unavailable: BLOCKED
+  test:
+    status: PENDING_DISCOVERY
+    adapter: null
+    active_adapter_identity: null
+    interface_version: null
+    compatibility_state: PENDING_DISCOVERY
+    last_compatibility_evidence: null
+    evidence: null
+    requires_build_artifact: UNKNOWN
+    on_unavailable: BLOCKED
+  final_review:
+    status: PENDING_DISCOVERY
+    adapter: null
+    active_adapter_identity: null
+    interface_version: null
+    compatibility_state: PENDING_DISCOVERY
+    last_compatibility_evidence: null
+    evidence: null
+    on_unavailable: HUMAN_REQUIRED
+
+watched_repository_sources:
+  # Sources for repository facts that can drift; maintenance records the latest review evidence.
+  - fact: "<repository fact that can drift>"
+    source: "<authoritative repository path, command, or service reference>"
+    last_checked_evidence: "<maintenance update record or PENDING_DISCOVERY>"
+
+evidence:
+  store: "<verified path or PENDING_DISCOVERY>"
+  required_identity: [task_id, transition_id, repository_revision, timestamp]
+  redaction_policy: "<verified rule or PENDING_DISCOVERY>"
+  stale_result_rule: "Invalidate downstream evidence after relevant changes."
+
+permissions:
+  filesystem_scope: "<verified scope or PENDING_DISCOVERY>"
+  external_actions: "<verified policy or PENDING_DISCOVERY>"
+  secrets_policy: "<verified policy or PENDING_DISCOVERY>"
+
+task_policy:
+  unknown_task_type: HUMAN_REQUIRED
+  unconfigured_required_capability: BLOCKED
+  allow_implicit_stage_skip: false
+
+assessment:
+  assessed_by: "<installer LLM/tool and version>"
+  assessed_at: "<timestamp>"
+  evidence_report: "<installer-side report reference>"

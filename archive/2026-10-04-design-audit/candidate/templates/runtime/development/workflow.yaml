@@ -1,0 +1,242 @@
+# Installed task workflow. This file is used during normal work in the target repo.
+# A PENDING_DISCOVERY binding cannot pass its gate; use its configured stop route.
+
+workflow_version: 1
+entry_state: NEW
+completion_state: COMPLETE
+stop_states: [HUMAN_REQUIRED, BLOCKED]
+
+# This is the agreed core sequence. Task types may add checks but may not skip/reorder it.
+states:
+  - NEW
+  - BASELINED
+  - RESEARCHED
+  - PATTERN_VERIFIED
+  - SPEC_READY
+  - TEST_READY
+  - PLAN_READY
+  - IMPLEMENTED
+  - PREFLIGHT
+  - PREFLIGHT_PASSED
+  - PREFLIGHT_FAILED
+  - BUILDING
+  - BUILD_FAILED
+  - BUILD_PASSED
+  - TESTING
+  - TEST_FAILED
+  - TEST_PASSED
+  - REPAIRING
+  - SPEC_VERIFIED
+  - READY_FOR_REVIEW
+  - COMPLETE
+  - HUMAN_REQUIRED
+  - BLOCKED
+
+capability_bindings:
+  research:
+    status: PENDING_DISCOVERY
+    adapter: null
+    on_unavailable: BLOCKED
+  pattern_search:
+    status: PENDING_DISCOVERY
+    adapter: null
+    on_unavailable: BLOCKED
+  preflight:
+    status: PENDING_DISCOVERY
+    adapter: null
+    on_unavailable: BLOCKED
+  build:
+    status: PENDING_DISCOVERY
+    adapter: null
+    on_unavailable: BLOCKED
+  test:
+    status: PENDING_DISCOVERY
+    adapter: null
+    on_unavailable: BLOCKED
+  final_review:
+    status: PENDING_DISCOVERY
+    adapter: null
+    on_unavailable: HUMAN_REQUIRED
+
+transitions:
+  - id: T-01
+    from: NEW
+    to: BASELINED
+    requires: [base_revision, working_tree_status]
+    verifier: baseline_capture
+  - id: T-02
+    from: BASELINED
+    to: RESEARCHED
+    requires: [research_record, source_references, unresolved_questions]
+    verifier: research_review
+  - id: T-03
+    from: RESEARCHED
+    to: PATTERN_VERIFIED
+    requires: [pattern_evidence_or_approved_not_applicable]
+    verifier: pattern_review
+  - id: T-04
+    from: PATTERN_VERIFIED
+    to: SPEC_READY
+    requires: [approved_task_spec, acceptance_criteria, non_goals]
+    verifier: spec_review
+  - id: T-05
+    from: SPEC_READY
+    to: TEST_READY
+    requires: [verification_plan_for_each_required_criterion]
+    verifier: test_design_review
+  - id: T-06
+    from: TEST_READY
+    to: PLAN_READY
+    requires: [implementation_tasks_mapped_to_criteria, expected_scope]
+    verifier: plan_review
+  - id: T-07
+    from: PLAN_READY
+    to: IMPLEMENTED
+    requires: [change_summary, actual_diff]
+    verifier: implementation_scope_check
+  - id: T-08
+    from: IMPLEMENTED
+    to: PREFLIGHT
+    requires: [preflight_invocation_record, current_revision]
+    verifier: preflight
+  - id: T-09
+    from: PREFLIGHT
+    to: PREFLIGHT_PASSED
+    requires: [preflight_result_pass, current_revision]
+    verifier: preflight
+  - id: T-10
+    from: PREFLIGHT
+    to: PREFLIGHT_FAILED
+    requires: [preflight_result_fail_or_blocked]
+    verifier: preflight
+  - id: T-11
+    from: PREFLIGHT_FAILED
+    to: HUMAN_REQUIRED
+    requires: [blocking_findings, resolution_needed]
+    verifier: escalation_policy
+  - id: T-12
+    from: PREFLIGHT_PASSED
+    to: BUILDING
+    requires: [build_binding_configured, build_adapter_identity, build_invocation_record]
+    verifier: build_adapter
+  - id: T-13
+    from: BUILDING
+    to: BUILD_PASSED
+    requires: [build_binding_configured, parseable_revision_bound_build_adapter_result, build_adapter_reported_status_pass, current_revision, artifact_identity]
+    verifier: build_result_validator
+  - id: T-14
+    from: BUILDING
+    to: BUILD_FAILED
+    requires: [build_binding_configured, parseable_revision_bound_build_adapter_result, build_adapter_reported_status_fail, diagnostics]
+    verifier: build_result_validator
+  - id: T-15
+    from: BUILD_FAILED
+    to: REPAIRING
+    when: repair_loops.build.enabled
+    requires: [failure_origin_build, attempts_remaining, new_evidence]
+    verifier: repair_policy
+  - id: T-16
+    from: BUILD_FAILED
+    to: HUMAN_REQUIRED
+    when: not repair_loops.build.enabled
+    requires: [failure_record, resolution_needed]
+    verifier: escalation_policy
+  - id: T-17
+    from: REPAIRING
+    to: PREFLIGHT
+    requires: [repair_summary, new_diff_identity, repair_hypothesis]
+    verifier: repair_summary_and_scope_check
+  - id: T-18
+    from: BUILD_PASSED
+    to: TESTING
+    requires: [test_binding_configured, test_adapter_identity, build_id, test_invocation_record]
+    verifier: test_adapter
+  - id: T-19
+    from: TESTING
+    to: TEST_PASSED
+    requires: [test_binding_configured, parseable_revision_bound_test_adapter_result, test_adapter_reported_status_pass, current_revision, tested_build_id]
+    verifier: test_result_validator
+  - id: T-20
+    from: TESTING
+    to: TEST_FAILED
+    requires: [test_binding_configured, parseable_revision_bound_test_adapter_result, test_adapter_reported_status_fail, diagnostics, tested_build_id]
+    verifier: test_result_validator
+  - id: T-21
+    from: TEST_FAILED
+    to: REPAIRING
+    when: repair_loops.test.enabled
+    requires: [failure_origin_test, attempts_remaining, new_evidence]
+    verifier: repair_policy
+  - id: T-22
+    from: TEST_FAILED
+    to: HUMAN_REQUIRED
+    when: not repair_loops.test.enabled
+    requires: [failure_record, resolution_needed]
+    verifier: escalation_policy
+  - id: T-23
+    from: REPAIRING
+    to: HUMAN_REQUIRED
+    when: attempts_exhausted_or_no_progress
+    requires: [attempt_history, unresolved_failure]
+    verifier: repair_policy
+  - id: T-24
+    from: TEST_PASSED
+    to: SPEC_VERIFIED
+    requires: [all_required_criteria_traced_to_passing_evidence]
+    verifier: traceability_check
+  - id: T-25
+    from: SPEC_VERIFIED
+    to: READY_FOR_REVIEW
+    requires: [final_diff_review, unresolved_risks, documentation_decision]
+    verifier: final_review
+  - id: T-26
+    from: READY_FOR_REVIEW
+    to: COMPLETE
+    requires: [repo_specific_completion_condition]
+    verifier: completion_policy
+
+failure_routes:
+  unavailable_or_ambiguous_tool_result:
+    to: BLOCKED
+  missing_or_malformed_adapter_result:
+    from: [BUILDING, TESTING]
+    to: BLOCKED
+    requires: [adapter_result_status_UNKNOWN, result_format_absent_or_malformed, resolution_needed]
+  adapter_reported_blocked:
+    from: [BUILDING, TESTING]
+    to: BLOCKED
+    requires: [parseable_revision_bound_adapter_result, adapter_result_status_BLOCKED, resolution_needed]
+
+repair_loops:
+  build:
+    supported: true
+    enabled: false
+    mode: manual # manual | guided | automatic
+    max_attempts: 0
+    route_after_repair: PREFLIGHT
+  test:
+    supported: true
+    enabled: false
+    mode: manual
+    max_attempts: 0
+    route_after_repair: PREFLIGHT
+    may_skip_rebuild: false # Enable only with a repo-specific artifact-validity check.
+
+evidence_record:
+  required_fields:
+    - id
+    - transition_id_or_criterion_id
+    - verifier_type
+    - result
+    - command_or_tool
+    - revision_or_diff_identity
+    - timestamp
+    - output_reference
+  allowed_results: [PASS, FAIL, BLOCKED, UNKNOWN, NOT_APPLICABLE]
+
+invalidation:
+  on_relevant_source_change:
+    invalidate_states: [PREFLIGHT_PASSED, BUILD_PASSED, TEST_PASSED, SPEC_VERIFIED, READY_FOR_REVIEW, COMPLETE]
+    return_to: IMPLEMENTED
+  on_test_only_change:
+    policy: "PENDING_DISCOVERY: define from actual artifact/test dependencies; default to preflight, build, and test again"

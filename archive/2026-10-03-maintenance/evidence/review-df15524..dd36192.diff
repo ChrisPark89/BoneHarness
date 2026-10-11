@@ -1,0 +1,282 @@
+# Review package: df15524ebfd998dd697c375867978a6184ae8d7d..HEAD
+
+## Commits
+dd36192 Add runtime harness maintenance workflow
+
+## Files changed
+ .../templates/runtime/development/HARNESS.md       |   3 +-
+ .../runtime/maintenance/harness-maintenance.md     |  44 +++++++
+ .../runtime/maintenance/maintenance-workflow.yaml  | 130 +++++++++++++++++++++
+ .../templates/harness-update-record.yaml           |  44 +++++++
+ 4 files changed, 220 insertions(+), 1 deletion(-)
+
+## Diff
+diff --git a/agent_harness_builder_kit/templates/runtime/development/HARNESS.md b/agent_harness_builder_kit/templates/runtime/development/HARNESS.md
+index df2818a..7bc1dbd 100644
+--- a/agent_harness_builder_kit/templates/runtime/development/HARNESS.md
++++ b/agent_harness_builder_kit/templates/runtime/development/HARNESS.md
+@@ -1,26 +1,27 @@
+ # Installed Repository Harness
+ 
+-This is the task agent's entry point for software work in this repository. Use this generated harness for normal development tasks.
++This is the task agent's entry point for software work in this repository. Use this generated harness for normal development tasks. Route harness-maintenance requests to `../maintenance/harness-maintenance.md` and `../maintenance/maintenance-workflow.yaml`.
+ 
+ ## Start a task
+ 
+ 1. Read ../shared/harness-status.md and ../shared/repo-profile.yaml.
+ 2. Read workflow.yaml and the relevant configured skill.
+ 3. Create a task record from task-spec.md under the configured run/evidence location.
+ 4. Start at NEW, record the base revision and working-tree state, then follow the configured transitions in order.
+ 5. Before advancing, attach the required evidence and use the transition's named verifier.
+ 
+ ## Operating rules
+ 
+ - This harness is repo-specific. Treat ../shared/repo-profile.yaml and workflow.yaml as the source of truth for local commands, task types, stage guards, and capability status.
+ - Follow the state machine. Do not skip, reorder, or invent transitions.
+ - If a capability is PENDING_DISCOVERY or UNAVAILABLE, stop at its gate as BLOCKED or HUMAN_REQUIRED and record what would resolve it.
+ - A missing command result is UNKNOWN, never PASS. An LLM review is not a build or test result.
+ - Tie build/test evidence to the revision and artifact actually checked. Relevant edits invalidate downstream evidence.
+ - A build/test repair loop may run only when workflow.yaml enables it and its retry policy permits another attempt.
+ - Preserve evidence from failed attempts. Stop when the policy limit is reached or there is no new evidence.
++- For a harness fact correction, stage-adapter update, or repository drift reconciliation, use `../maintenance/harness-maintenance.md` and `../maintenance/maintenance-workflow.yaml`. Continue to use `workflow.yaml` for normal development tasks.
+ - Use this generated repo-specific harness as the task workflow source.
+ 
+ ## Finish
+ 
+ Report the final task state, changed scope, configured checks run, evidence references, pending risks, and any human decision required. COMPLETE is reached only under the repo-specific completion condition in workflow.yaml.
+diff --git a/agent_harness_builder_kit/templates/runtime/maintenance/harness-maintenance.md b/agent_harness_builder_kit/templates/runtime/maintenance/harness-maintenance.md
+new file mode 100644
+index 0000000..1915d41
+--- /dev/null
++++ b/agent_harness_builder_kit/templates/runtime/maintenance/harness-maintenance.md
+@@ -0,0 +1,44 @@
++# Installed Harness Maintenance Guide
++
++Use this target-side guide for a request to add or replace a stage adapter, correct a repository fact used by the harness, or reconcile the harness after relevant repository changes. For normal software work, use `../development/HARNESS.md` and `../development/workflow.yaml`.
++
++## Start an update
++
++1. Read `../shared/harness-status.md`, `../shared/repo-profile.yaml`, and `../shared/skill-contract.md`. These are the canonical cross-workflow files; do not create parallel status, profile, or adapter-contract copies.
++2. Read `maintenance-workflow.yaml`, the active binding or fact, `../development/workflow.yaml` where a status mapping is relevant, and the requested candidate or authoritative source.
++3. Create one append-only attempt record from `templates/harness-update-record.yaml` at `maintenance/updates/<update-id>.yaml`. Do this before leaving `REQUESTED`; do not store update records in `../development/runs/`.
++4. Classify the request as `adapter_add_or_swap`, `repository_fact_correction`, or `repository_drift_review`. Structural or workflow changes are migrations and require `HUMAN_REQUIRED` review.
++
++Follow the lifecycle `REQUESTED` → `INSPECTED` → `PLANNED` → `STAGED`. From `STAGED`, an adapter change reaches `ADAPTER_COMPATIBLE`, a fact correction reaches `SOURCE_VERIFIED`, and a drift review reaches `DRIFT_ASSESSED`. Accepted changes reach `PROMOTED` → `STATUS_UPDATED` → `COMPLETE`; a no-change drift review goes directly from `DRIFT_ASSESSED` to `STATUS_UPDATED`.
++
++## Inspect and plan
++
++Inspect read-only before proposing a change. Capture the base revision and working-tree identity, affected capability or fact, current active binding, relevant canonical status/profile fields, applicable development-workflow status mapping, source evidence, and declared permissions or side effects.
++
++Plan the smallest change that resolves the request. Record the candidate source, files in scope, before and proposed bindings or fact values, applicable checks, permissions and side effects, promotion conditions, and the reference that restores the active binding or prior fact. Stage the candidate without replacing the active binding.
++
++If required evidence can be gathered later, record `PENDING` with the missing evidence and resolution needed. If a policy or authorization decision is needed, record `HUMAN_REQUIRED`. Do not guess unknown facts or permissions.
++
++## Check the staged update
++
++For an adapter add or swap, reach `ADAPTER_COMPATIBLE` only after checking the declared capability and adapter identity, supported interface version or documented migration, capability-required result fields, explicit status mapping, evidence reference, failure and unknown-result behavior, and permissions or side effects. A representative result or schema check may show that the harness can parse and route the result.
++
++`ADAPTER_COMPATIBLE` does not establish that the adapter selected the right operation, that its build or test work was correct, or that its reported result is truthful. Do not independently rerun a tool to judge its underlying work.
++
++For a fact correction, reach `SOURCE_VERIFIED` only with an authoritative source reference for the corrected value. For a drift review, reach `DRIFT_ASSESSED` after comparing the configured watched sources and recording changed, missing, or unchanged evidence. A drift review must not silently change a capability binding or turn an unknown fact into a verified fact.
++
++If an adapter fails compatibility, record `REJECTED` and retain the previous active binding unchanged. A missing result, malformed required field, unsupported status, unsafe failure route, permission expansion, or workflow transition change must route to `PENDING` or `HUMAN_REQUIRED` as applicable.
++
++## Promote and close
++
++Promote an adapter add or same-capability replacement only when it passes the compatibility checks, preserves the supported interface, and does not expand permissions. Interface, permission, structural, or workflow changes require a recorded human decision before promotion. Promote a verified fact correction under the same policy.
++
++After promotion, update only the applicable canonical fields in `../shared/harness-status.md` or `../shared/repo-profile.yaml`, including active binding, corrected fact, watched-source result, integration readiness, and verification evidence. Then record `STATUS_UPDATED` and `COMPLETE` in the update record.
++
++A no-change drift review goes from `DRIFT_ASSESSED` directly to `STATUS_UPDATED`, with its audit record and no promotion. If promotion fails, restore the recorded prior active binding, mark the attempt `FAILED`, and retain the candidate, evidence, and rollback reference. Do not change active configuration for a rejected or failed candidate.
++
++## Record and rollback rules
++
++Every attempt record must state its request type, base revision, affected capability or fact, inspected evidence, candidate source, before and after binding, applicable compatibility, source, or drift checks, permissions and side effects, promotion result, resulting status, and rollback reference. Use explicit values or `UNKNOWN` or `PENDING`; never leave a claim blank.
++
++Keep records append-only. A correction creates a new record that supersedes an earlier assertion rather than erasing history. Keep task evidence under `../development/runs/<task-id>/` and harness update records under `maintenance/updates/<update-id>.yaml`.
+diff --git a/agent_harness_builder_kit/templates/runtime/maintenance/maintenance-workflow.yaml b/agent_harness_builder_kit/templates/runtime/maintenance/maintenance-workflow.yaml
+new file mode 100644
+index 0000000..efa0138
+--- /dev/null
++++ b/agent_harness_builder_kit/templates/runtime/maintenance/maintenance-workflow.yaml
+@@ -0,0 +1,130 @@
++# Installed harness-maintenance workflow. This file governs harness updates only.
++# It is separate from ../development/workflow.yaml, which governs normal development tasks.
++
++workflow_version: 1
++entry_state: REQUESTED
++completion_state: COMPLETE
++stop_states: [REJECTED, PENDING, HUMAN_REQUIRED, FAILED]
++
++request_types:
++  adapter_add_or_swap: ADAPTER_COMPATIBLE
++  repository_fact_correction: SOURCE_VERIFIED
++  repository_drift_review: DRIFT_ASSESSED
++
++states:
++  - REQUESTED
++  - INSPECTED
++  - PLANNED
++  - STAGED
++  - ADAPTER_COMPATIBLE
++  - SOURCE_VERIFIED
++  - DRIFT_ASSESSED
++  - PROMOTED
++  - STATUS_UPDATED
++  - COMPLETE
++  - REJECTED
++  - PENDING
++  - HUMAN_REQUIRED
++  - FAILED
++
++transitions:
++  - id: M-01
++    from: REQUESTED
++    to: INSPECTED
++    requires: [request_type, request_summary, update_record_path]
++    verifier: request_classification
++  - id: M-02
++    from: INSPECTED
++    to: PLANNED
++    requires: [base_revision, active_binding_or_fact, inspected_evidence, affected_capability_or_fact]
++    verifier: read_only_inspection
++  - id: M-03
++    from: PLANNED
++    to: STAGED
++    requires: [smallest_scope_plan, candidate_source, before_binding, proposed_binding, permissions_and_side_effects, rollback_reference]
++    verifier: staging_scope_check
++  - id: M-04
++    from: STAGED
++    to: ADAPTER_COMPATIBLE
++    when: request_type == adapter_add_or_swap
++    requires: [declared_capability, adapter_identity, supported_interface_version, required_result_fields, status_mapping, evidence_reference, failure_behavior, permissions_check]
++    verifier: adapter_compatibility_check
++  - id: M-05
++    from: STAGED
++    to: REJECTED
++    when: request_type == adapter_add_or_swap and compatibility_check_failed
++    requires: [compatibility_findings, before_binding, update_record_path]
++    verifier: active_binding_unchanged_check
++  - id: M-06
++    from: STAGED
++    to: SOURCE_VERIFIED
++    when: request_type == repository_fact_correction
++    requires: [affected_fact, authoritative_source_reference, corrected_value]
++    verifier: source_verification
++  - id: M-07
++    from: STAGED
++    to: DRIFT_ASSESSED
++    when: request_type == repository_drift_review
++    requires: [watched_source_references, drift_assessment, update_record_path]
++    verifier: drift_evidence_review
++  - id: M-08
++    from: ADAPTER_COMPATIBLE
++    to: PROMOTED
++    requires: [promotion_policy_passed, before_binding, proposed_binding, rollback_reference]
++    verifier: promotion_policy
++  - id: M-09
++    from: SOURCE_VERIFIED
++    to: PROMOTED
++    requires: [promotion_policy_passed, authoritative_source_reference, rollback_reference]
++    verifier: promotion_policy
++  - id: M-10
++    from: DRIFT_ASSESSED
++    to: PROMOTED
++    when: drift_requires_accepted_update
++    requires: [promotion_policy_passed, proposed_change, rollback_reference]
++    verifier: promotion_policy
++  - id: M-11
++    from: DRIFT_ASSESSED
++    to: STATUS_UPDATED
++    when: no_change_found
++    requires: [watched_source_references, no_change_evidence, update_record_path]
++    verifier: no_change_drift_closeout
++  - id: M-12
++    from: PROMOTED
++    to: STATUS_UPDATED
++    requires: [promotion_result, canonical_profile_or_status_update, update_record_path]
++    verifier: canonical_status_update
++  - id: M-13
++    from: STATUS_UPDATED
++    to: COMPLETE
++    requires: [append_only_update_record, resulting_status, rollback_reference]
++    verifier: record_completion
++
++routes:
++  evidence_unavailable:
++    to: PENDING
++    requires: [missing_evidence, resolution_needed, update_record_path]
++  policy_or_authorization_decision_needed:
++    to: HUMAN_REQUIRED
++    requires: [decision_needed, before_binding, proposed_binding, update_record_path]
++  interface_permission_or_workflow_change:
++    to: HUMAN_REQUIRED
++    requires: [change_description, compatibility_or_policy_findings, update_record_path]
++  promotion_failure:
++    to: FAILED
++    requires: [promotion_failure_evidence, restored_before_binding, rollback_reference, update_record_path]
++
++resumption:
++  PENDING:
++    to: INSPECTED
++    requires: [newly_available_evidence]
++  HUMAN_REQUIRED:
++    to: PLANNED
++    requires: [recorded_human_decision]
++
++invariants:
++  - "Stage candidates without replacing the active binding."
++  - "A rejected candidate leaves the previous active binding unchanged."
++  - "A failed promotion restores the recorded previous active binding."
++  - "A no-change drift review reaches STATUS_UPDATED without promotion."
++  - "Adapter compatibility checks only the declared interface, required fields, status mapping, evidence reference, failure behavior, and permissions."
+diff --git a/agent_harness_builder_kit/templates/runtime/maintenance/templates/harness-update-record.yaml b/agent_harness_builder_kit/templates/runtime/maintenance/templates/harness-update-record.yaml
+new file mode 100644
+index 0000000..5e2beb9
+--- /dev/null
++++ b/agent_harness_builder_kit/templates/runtime/maintenance/templates/harness-update-record.yaml
+@@ -0,0 +1,44 @@
++# Create one append-only record for every maintenance attempt at:
++# maintenance/updates/<update-id>.yaml
++# Replace every PENDING value with an explicit value, UNKNOWN, or PENDING. Do not leave claims blank.
++
++update_id: PENDING
++timestamp: PENDING
++lifecycle_state: REQUESTED
++request:
++  type: PENDING # adapter_add_or_swap | repository_fact_correction | repository_drift_review
++  summary: PENDING
++base_revision: PENDING
++affected:
++  capability: PENDING
++  fact: PENDING
++inspected_evidence:
++  - PENDING
++candidate_source:
++  kind: PENDING
++  reference: PENDING
++  version_or_revision: PENDING
++binding:
++  before: PENDING
++  proposed_after: PENDING
++  resulting_active: PENDING
++checks:
++  adapter_compatibility:
++    result: PENDING
++    declared_interface: PENDING
++    required_fields: PENDING
++    status_mapping: PENDING
++    evidence_reference: PENDING
++    failure_behavior: PENDING
++  source_verification:
++    result: PENDING
++    authoritative_source_reference: PENDING
++  drift_assessment:
++    result: PENDING
++    watched_source_references:
++      - PENDING
++permissions_and_side_effects: PENDING
++promotion:
++  result: PENDING
++  resulting_status: PENDING
++rollback_reference: PENDING

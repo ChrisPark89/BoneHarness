@@ -1,0 +1,21 @@
+{
+  "review_date": "2026-10-04",
+  "source": "/private/tmp/harness-maintenance-sdd-20261003/work/agent_harness_builder_kit",
+  "committed_head": "a280bd1",
+  "includes_uncommitted_installer_edits": true,
+  "hashes": {
+    "candidate/INSTALLER_SPEC.md": "6079e59add57fd326b3517e1e44ef1a59c3e82a4017b5a49381954372a617dba",
+    "candidate/README.md": "168e381634395898fa5d62894916e21097762054a8c37815a8767f54dd9a05e2",
+    "candidate/installer/bootstrap-prompt.md": "8f871e999668cf400c3e2b95f006a0ecf01dcc09f3208be5e42490455ded55f5",
+    "candidate/installer/installation-checklist.md": "5387b964e0b11430f227e0e837808687c986b9f797846d1d4e5485e32bfbe0f9",
+    "candidate/templates/runtime/development/HARNESS.md": "23a4dedd61737c68578ee180d857446ac856929314afce25fbe55783a7af97fd",
+    "candidate/templates/runtime/development/task-spec.md": "7bf237fd7858d8edf6b72f9c3bc4caaeea1b6430d990c2761655af564a07b51a",
+    "candidate/templates/runtime/development/workflow.yaml": "cd3fa95a19ecfe093b4e4f3fb950b4a89538cbbb1f792a3625c81c024964765f",
+    "candidate/templates/runtime/maintenance/harness-maintenance.md": "777231fcf92219feab339b9159b376b0cb0604a3ea2a7afd4a55262e3b326de4",
+    "candidate/templates/runtime/maintenance/maintenance-workflow.yaml": "4df10168a522fb46e761d4100a2dc6bf03c621b015092b4614ac0b39488af0ce",
+    "candidate/templates/runtime/maintenance/templates/harness-update-record.yaml": "c08407a06eb1112060f77cf11370f6ed9cda2bb8b70a22397e530302a9859190",
+    "candidate/templates/runtime/shared/harness-status.md": "33cd1c281ba0e13b992b32a56dc96188e437a5fa27bfb342b090ffa2c2f1e7bd",
+    "candidate/templates/runtime/shared/repo-profile.yaml": "f6885c089ac95bc28b25fc1664c2b43408f372716f33b5d89588a85070fb120c",
+    "candidate/templates/runtime/shared/skill-contract.md": "bffa6c7651f5069dd1d48825f85d831491601db575268f8a63dfa73e4cf7c12b"
+  }
+}

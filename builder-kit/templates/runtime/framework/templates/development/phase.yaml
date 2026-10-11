@@ -1,0 +1,18 @@
+# Reuse existing durable evidence; create a capture only when no durable source exists.
+action: phase
+phase: initialization
+status: PASS
+summary: Reviewed request, repository conventions, and starting source scope.
+evidence:
+  - reference: {kind: LOCAL, scope: HARNESS, path: artifacts/development/TASK/request.md}
+    provenance: REVIEW
+    summary: Findings and review judgment.
+# USER_SKIPPED instead of PASS requires approval with the original explicit user instruction.
+# approval:
+#   instruction:
+#     reference: {kind: LOCAL, scope: HARNESS, path: artifacts/development/TASK/request.md}
+#     provenance: REVIEW
+#     summary: Original user instruction, retained verbatim.
+#   user: USER
+#   quote: Exact words explicitly authorizing this phase skip.
+#   review: This instruction applies to this task and phase under the current scope.
