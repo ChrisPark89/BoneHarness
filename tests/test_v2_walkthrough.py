@@ -44,8 +44,16 @@ class InstalledWalkthrough(unittest.TestCase):
             for phase, command in commands.items():
                 profile['adapters']['test' if phase == 'testing' else phase] = dict(
                     connection=' '.join(command), status='COMPATIBLE', reason='Invocation and evidence interpretation reviewed.',
-                    evidence=['artifacts/development/check/compatibility.md'])
+                    evidence=['artifacts/installation/installation-record.yaml'])
             profile_path.write_text(yaml.safe_dump(profile, sort_keys=False))
+            record_path = harness / 'artifacts/installation/installation-record.yaml'
+            installation = yaml.safe_load(record_path.read_text())
+            installation['checks'] = [dict(name=phase+'-interface',
+                adapter='test' if phase == 'testing' else phase, connection=' '.join(command),
+                method='REVIEW', observations='Inspected local invocation; exit status and output can be retained.',
+                result='PASS', reason='Interface is usable; no tool-quality claim.',
+                evidence=['artifacts/development/check/compatibility.md']) for phase, command in commands.items()]
+            record_path.write_text(yaml.safe_dump(installation, sort_keys=False))
 
             def cli(tool, *arguments):
                 result = subprocess.run([sys.executable, '-B', str(tools / tool), '--repo-root', str(repo), *arguments],

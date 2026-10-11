@@ -1,13 +1,18 @@
-# BoneHarness builder kit — format 2
+# BoneHarness builder kit
 
-Install a portable repository harness whose profile shows adapter connections, status and reasons.
+Give this kit to an LLM to install a harness in your repository.
 
-1. Read the [installation guide](INSTALLER_SPEC.md).
-2. Create a fresh scaffold: `python3 builder-kit/installer/install.py --repo-root /absolute/repository`.
-3. Follow installed setup instructions; scaffolding does not assess adapters or activate the harness.
+1. Copy the [installation prompt](installer/bootstrap-prompt.md); fill in the repository and kit paths.
+2. Let the LLM follow the [installation guide](INSTALLER_SPEC.md). Python 3.11+ creates the scaffold; [dependency instructions](templates/runtime/framework/tools/README.md) prepare its helpers.
+3. Read the generated `.harness/docs/setup.md`: can you begin, what needs attention, and what comes next?
+4. Give the LLM a task and point it to `.harness/README.md`. Review the resulting short task report.
 
-The installed `.harness/README.md` links development, recovery, setup and maintenance. Humans can open the compact profile directly. Optional CLI helpers support setup, updates and diagnosis.
+| Installed location | Purpose |
+|---|---|
+| `.harness/docs/` | Human setup, task and update summaries |
+| `.harness/framework/` | Instructions, connections and tools |
+| `.harness/artifacts/` | Supporting records and evidence |
 
-Only `builder-kit/` is distributed. New installations use format `2.0.0`. Existing installations are never overwritten or automatically migrated. Preserve format 1 histories with their original tools.
+Missing tools may delay particular phases; the setup summary must name them. Users may explicitly skip phases except specification acceptance and final verification. Compatibility does not prove tool quality.
 
-See [adapter examples](examples/README.md) and the optional [checker](checker/README.md). Adapter compatibility, installed structure and task completion are distinct claims. Unknown settings remain absent until needed; no generalized configuration framework is required.
+Only `builder-kit/` is distributed. Keep an existing installation and use its maintenance guide for updates.

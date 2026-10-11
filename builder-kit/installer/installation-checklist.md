@@ -2,15 +2,16 @@
 
 | Check | Evidence to retain |
 |---|---|
-| Containment | All harness-owned files are under `.harness/`; repository instructions unchanged |
-| Structure | Required guides/tools exist; format 2 schemas and references validate |
+| Containment | Observed changes confined to `.harness/`; repository instructions unchanged |
+| Structure | Checker command, exit status and output; or recorded manual observations |
 | Profile | Every adapter shows connection, status and reason; no invented compatibility |
-| Connections | Needed adapters have usable instructions and actual compatibility evidence |
+| Connections | Matching assessments; execution claims retain command, exit status and output; gaps name the affected phase/action |
+| Python helpers | Python executable/version, installed dependency versions and `pip check` result |
 | Activation | Installed README and development guide were explicitly loaded |
-| Handoff | Setup summary names current configuration, issues, next action and evidence |
+| Handoff | Known blockers, next prompt and evidence; no guarantees about future phases |
 
-Record findings as PASS, FAIL or PENDING with a reason and evidence. Missing evidence stays pending. A structural checker report covers only its declared checks; it does not authorize execution, prove adapter quality or complete a task.
+Record PASS, FAIL or PENDING with a reason and evidence. Reuse one setup log under `artifacts/installation/` for command results and manual observations; reference it from checks. Scripts, lockfiles and instructions alone do not prove checks ran. Missing evidence stays pending. Checker results cover declared checks, not permissions, tool quality or task completion.
 
-The installed profile is the single connection registry. Do not generate target-by-capability assessment matrices, duplicate policy blocks or placeholder pending settings. Actual invocation details belong to the operation that used them.
+Keep connections in the profile; invocation details in their operation records. Avoid duplicate matrices and placeholder settings.
 
-After changes, repeat affected checks through maintenance. Preserve historical records and pinned task configurations. Use matching old tools for old formats.
+After changes, repeat affected checks through maintenance. Preserve histories and pinned configurations. Use matching tools for old formats.

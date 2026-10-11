@@ -51,8 +51,16 @@ def install():
         profile['adapters']['test' if phase == 'testing' else phase] = dict(
             connection=' '.join(command), status='COMPATIBLE',
             reason='Local command, output and exit status reviewed.',
-            evidence=['artifacts/installation/demo-review.md'])
+            evidence=['artifacts/installation/installation-record.yaml'])
     profile_path.write_text(yaml.safe_dump(profile, sort_keys=False), encoding='utf-8')
+    record_path = HARNESS / 'artifacts/installation/installation-record.yaml'
+    record = yaml.safe_load(record_path.read_text())
+    record['checks'] = [dict(name=phase+'-interface', adapter='test' if phase == 'testing' else phase,
+        connection=' '.join(command), method='REVIEW', result='PASS',
+        observations='Inspected local invocation, captured output and exit-status interpretation.',
+        reason='Interface fits; tool quality is not established.',
+        evidence=['artifacts/installation/demo-review.md']) for phase, command in COMMANDS.items()]
+    record_path.write_text(yaml.safe_dump(record, sort_keys=False), encoding='utf-8')
 
 
 def scenario(task, repair=False):

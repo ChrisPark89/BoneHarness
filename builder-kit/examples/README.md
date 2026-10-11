@@ -1,9 +1,31 @@
-# Small profile examples
+# Adapter assessment example
 
-[Connected adapter](connected-profile.yaml) shows only the extra information needed for a connected test command. Its NOT_ASSESSED status is intentional: an example supplies no compatibility evidence.
+The [connected profile](connected-profile.yaml) starts NOT_ASSESSED. To establish compatibility, follow the installed [adapter guide](../templates/runtime/framework/adapters/adapter-interface.md).
 
-[Unconnected profile](../templates/runtime/framework/config/repo-profile.yaml) is the installation default. Add a connection when needed; keep unknown details absent.
+Append this **example shape**, filled with actual findings, to the existing installation record's `checks`:
 
-To record COMPATIBLE, inspect actual usage and evidence interpretation, retain the check under `.harness/artifacts/`, and add its relative path to that adapter's `evidence`. Fixture checks may establish interface behavior, never completed production work or tool quality.
+```yaml
+name: test-interface
+adapter: test
+connection: python3 -m unittest discover -s tests
+method: REVIEW
+observations: Inspected test invocation; the runner exposes exit status and text output.
+result: PASS
+reason: Outcome and diagnostics can be interpreted.
+```
 
-Actual source, target, environment, deadlines and artifacts belong in task operations when relevant. These examples execute nothing and do not generate fake installation or task histories.
+Then the profile's test entry can reference:
+
+```yaml
+status: COMPATIBLE
+evidence:
+  - artifacts/installation/installation-record.yaml
+```
+
+The checker requires the adapter and connection to match. Definitions or the profile itself are not assessment records.
+
+For an actual probe, use `method: EXECUTION` and include `execution.command`, `execution.exit_code` and `execution.output`. Capture native output; do not invent it. A nonzero exit can still demonstrate a compatible interface. Never claim execution in a REVIEW assessment.
+
+One installation record can hold all adapter assessments. Maintenance uses its existing update record. No new record files or native tool-result format are required.
+
+These examples are instructions, not evidence that checks occurred.

@@ -490,38 +490,7 @@
         "checks": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
-              },
-              "result": {
-                "enum": [
-                  "PASS",
-                  "FAIL",
-                  "PENDING"
-                ]
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1
-              },
-              "evidence": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "minItems": 0
-              }
-            },
-            "required": [
-              "name",
-              "result",
-              "reason"
-            ],
-            "additionalProperties": false
+            "$ref": "#/$defs/Check"
           },
           "minItems": 0
         },
@@ -608,38 +577,7 @@
         "checks": {
           "type": "array",
           "items": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string",
-                "minLength": 1
-              },
-              "result": {
-                "enum": [
-                  "PASS",
-                  "FAIL",
-                  "PENDING"
-                ]
-              },
-              "reason": {
-                "type": "string",
-                "minLength": 1
-              },
-              "evidence": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "minLength": 1
-                },
-                "minItems": 0
-              }
-            },
-            "required": [
-              "name",
-              "result",
-              "reason"
-            ],
-            "additionalProperties": false
+            "$ref": "#/$defs/Check"
           },
           "minItems": 0
         },
@@ -694,6 +632,153 @@
         "exclude"
       ],
       "additionalProperties": false
+    },
+    "Check": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "PENDING"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 0
+        },
+        "adapter": {
+          "enum": [
+            "research",
+            "pattern_search",
+            "preflight",
+            "build",
+            "test",
+            "final_review"
+          ]
+        },
+        "connection": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "method": {
+          "enum": [
+            "REVIEW",
+            "EXECUTION"
+          ]
+        },
+        "observations": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "\\S"
+        },
+        "execution": {
+          "type": "object",
+          "properties": {
+            "command": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "exit_code": {
+              "type": "integer"
+            },
+            "output": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "command",
+            "exit_code",
+            "output"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "name",
+        "result",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "anyOf": [
+              {
+                "required": [
+                  "adapter"
+                ]
+              },
+              {
+                "required": [
+                  "connection"
+                ]
+              },
+              {
+                "required": [
+                  "method"
+                ]
+              },
+              {
+                "required": [
+                  "observations"
+                ]
+              },
+              {
+                "required": [
+                  "execution"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "required": [
+              "adapter",
+              "connection",
+              "method",
+              "observations"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "method"
+            ],
+            "properties": {
+              "method": {
+                "const": "EXECUTION"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "execution"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "execution"
+              ]
+            }
+          }
+        }
+      ]
     }
   }
 }

@@ -78,8 +78,46 @@ def check_installation(repo: Path, *, update=None):
     def checked_rows(value, owner):
         for check in value.get('checks', []):
             evidence(check.get('evidence', []), owner)
-            if check['result'] == 'PASS' and not check.get('evidence'):
+            if check['result'] == 'PASS' and not check.get('evidence') and not check.get('adapter'):
                 issue('CHECK_EVIDENCE', owner, 'PASS requires retained evidence: ' + check['name'])
+
+    assessments = {}
+
+    def assess_adapter(capability, adapter):
+        owner = PROFILE + '#/adapters/' + capability
+        for name in adapter['evidence']:
+            location = Path(name).parts
+            if name == INSTALLATION:
+                kind = 'Installation'
+            elif (len(location) == 4 and location[:2] == ('artifacts', 'maintenance')
+                  and location[-1] == 'update.yaml'):
+                kind = 'Update'
+            else:
+                issue('ADAPTER_ASSESSMENT', owner,
+                      'Reference an installation/maintenance record with a matching adapter assessment; '
+                      'the profile and definitions cannot prove their own assessment. Otherwise use NOT_ASSESSED.')
+                continue
+            if name not in assessments:
+                value = read(name)
+                valid = validate(value, 'records.schema.json', kind, name)
+                assessments[name] = value if valid else None
+                if valid:
+                    checked_rows(value, name)
+            value = assessments[name]
+            if value is None:
+                continue
+            if kind == 'Update' and value['status'] not in ('CHECKED', 'PUBLISHED'):
+                issue('ADAPTER_ASSESSMENT', owner, 'Maintenance assessment must be CHECKED or PUBLISHED.')
+                continue
+            rows = [row for row in value['checks'] if row.get('adapter') == capability]
+            if (len(rows) != 1 or rows[0]['connection'] != adapter['connection']
+                    or rows[0]['result'] != 'PASS'):
+                issue('ADAPTER_ASSESSMENT', owner,
+                      'Need one PASS assessment for this adapter and exact connection, with method and observations; '
+                      'otherwise use NOT_ASSESSED.')
+            elif any(ref in (PROFILE, name) for ref in rows[0].get('evidence', [])):
+                issue('ADAPTER_ASSESSMENT', owner,
+                      'An assessment cannot cite itself or the profile as supporting proof; retain actual observations.')
 
     for name in REQUIRED:
         try:
@@ -100,6 +138,8 @@ def check_installation(repo: Path, *, update=None):
         report['adapters'] = profile['adapters']
         for capability, adapter in profile['adapters'].items():
             evidence(adapter.get('evidence', []), PROFILE + '#/adapters/' + capability)
+            if adapter['status'] == 'COMPATIBLE':
+                assess_adapter(capability, adapter)
     record = read(INSTALLATION)
     if validate(record, 'records.schema.json', 'Installation', INSTALLATION):
         report['activation'] = record['activation']
@@ -150,7 +190,7 @@ def check_installation(repo: Path, *, update=None):
                         or any(part in ('', '.', '..') or ':' in part for part in name.split('/'))
                         or any(ord(char) < 32 for char in name)):
                     issue('UPDATE_PATH', update, 'Require a canonical path inside .harness'); continue
-                if not (name.startswith('framework/') or name in ('README.md', 'docs/setup.md')):
+                if not (name.startswith('framework/') or name in ('README.md', 'docs/setup.md', '.gitignore')):
                     issue('UPDATE_SCOPE', update, 'Maintenance changes definitions and setup, never task captures or history'); continue
                 candidate = harness / name
                 try:
@@ -174,7 +214,7 @@ def check_installation(repo: Path, *, update=None):
                         issue(exc.code, name, str(exc))
     report['exit_code'] = 1 if report['diagnostics'] else 0
     report['structure'] = 'FAIL' if report['diagnostics'] else 'PASS'
-    report['checks'] = ['required_files', 'schemas', 'profile', 'local_evidence', 'installation_record', 'workflow', 'maintenance_steps']
+    report['checks'] = ['required_files', 'schemas', 'profile', 'local_evidence', 'adapter_assessments', 'installation_record', 'workflow', 'maintenance_steps']
     if update:
         report['checks'].append('update_record')
     return report

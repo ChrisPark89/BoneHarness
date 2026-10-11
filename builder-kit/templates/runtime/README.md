@@ -1,16 +1,23 @@
-# BoneHarness repository harness
+# Your repository harness
 
-| Need | Open |
+**Start with [setup status](docs/setup.md): it tells you whether you can begin, what needs attention and the next action.**
+
+| What you want to decide | Read |
 |---|---|
-| See adapter connections and issues | [Repository profile](framework/config/repo-profile.yaml) |
-| Start or continue a task | [Development](framework/workflows/development/HARNESS.md) |
-| Resume interrupted work | [Recovery](framework/workflows/recovery.md) |
-| Check installation | [Setup status](docs/setup.md), then [setup guide](framework/workflows/setup.md) |
-| Change an adapter or configuration | [Maintenance](framework/workflows/maintenance/harness-maintenance.md) |
-| Read task results | `docs/development/<task-id>/report.md` |
+| Can I start using the harness? | [Setup status](docs/setup.md) |
+| Which tools are connected? | [Adapter profile](framework/config/repo-profile.yaml) |
+| Did my task meet its specification? | `docs/development/<task-id>/report.md` |
+| Did a harness update succeed? | `docs/maintenance/<update-id>.md` |
 
-Read the relevant guide directly. Optional tools help with setup, updates and diagnosis; daily human use does not require a CLI. LLMs use the installed parser and writer helpers for structured records.
+To start work, tell the LLM: **“Follow `.harness/README.md` and its development guide for this task: …”**
 
-Human summaries live in `docs/`, definitions in `framework/`, and retained records/evidence in `artifacts/`. Respect repository instructions and permissions. Keep harness-owned changes under `.harness/`.
+## LLM entry points
 
-This installation uses format 2. Preserve older installations and histories with their matching tools; no automatic migration is provided.
+- [Develop or continue a task](framework/workflows/development/HARNESS.md)
+- [Recover interrupted work](framework/workflows/recovery.md)
+- [Update tools or configuration](framework/workflows/maintenance/harness-maintenance.md)
+- [Finish setup](framework/workflows/setup.md) · [Python dependencies](framework/tools/README.md)
+
+`docs/` contains short human summaries. `framework/` contains operating instructions and tools. `artifacts/` contains records and evidence; open it when investigating a report.
+
+Daily human review needs no command line. Setup readiness and individual task results are separate.

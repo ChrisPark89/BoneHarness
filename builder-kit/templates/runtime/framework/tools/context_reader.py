@@ -86,7 +86,36 @@ def extract_context(repo_root, harness_root='.harness', *, situation='developmen
     elif situation in ('maintenance', 'recovery'):
         result['next_action'] = 'Inspect the profile and start or select an actual maintenance update.'
     elif situation == 'setup':
-        result['next_action'] = 'Follow the setup checklist; structural checks, activation and adapter compatibility are separate.'
+        path = relative_path('artifacts/installation/installation-record.yaml', harness)
+        installation = load_document(path, harness)
+        error = next(local_validator(harness / 'framework/templates/schemas/records.schema.json', 'Installation').iter_errors(installation), None)
+        if error:
+            raise ValueError('Invalid installation record: ' + error.message)
+        result['status'] = installation['status']
+        result['installation'] = {key: installation[key] for key in
+                                  ('configuration_id', 'status', 'activation', 'checks')}
+        result['issues'] = installation.get('issues', [])
+        workflow = load_document(relative_path('framework/workflows/development/workflow.yaml', harness), harness)
+        error = next(local_validator(harness / 'framework/templates/schemas/workflow.schema.json').iter_errors(workflow), None)
+        if error:
+            raise ValueError('Invalid workflow: ' + error.message)
+        result['connection_gaps'] = []
+        for phase in workflow['phases']:
+            capability = CAPABILITIES.get(phase['id'], phase['id'])
+            binding = profile['adapters'].get(capability, {})
+            if phase.get('proof') == 'EXECUTION' and binding.get('status') != 'COMPATIBLE':
+                result['connection_gaps'].append(dict(phase=phase['id'],
+                    reason=binding.get('reason', 'No compatible connection.'),
+                    action='Connect a compatible tool or obtain an explicit user skip for this phase.'))
+        result['status_meaning'] = 'Recorded installation checks; not a task result or independent readiness verification.'
+        if installation['configuration_id'] != profile['configuration_id']:
+            result['next_action'] = 'Installation describes an earlier configuration; review current docs/setup.md and its maintenance evidence.'
+        elif installation['status'] != 'CHECKED' or installation['activation'] != 'CONFIRMED' or result['issues']:
+            result['next_action'] = 'Finish the pending setup checks and entry-guide activation; update docs/setup.md with evidence.'
+        elif result['connection_gaps']:
+            result['next_action'] = 'Review docs/setup.md; early work can begin, but listed execution phases need a connection or explicit user skip.'
+        else:
+            result['next_action'] = 'Review docs/setup.md and its Python prerequisites, then start a task through .harness/README.md.'
     else:
         result['next_action'] = 'Save the original request, then record a start step for a new task.'
     guide = ('maintenance/harness-maintenance.md' if update_id or situation in ('maintenance', 'recovery') else

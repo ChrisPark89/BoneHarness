@@ -1,24 +1,25 @@
 # BoneHarness specification — format 2
 
-**Design:** one ordered phase list, shared statuses and evidence-backed progress. [Implementation plan](implementation-plan.md).
+**Design:** ordered phases and evidence-backed progress. [Plan](implementation-plan.md).
 
 ## Required behavior
 
 | Area | Requirement |
 |---|---|
-| Installation | Create `.harness/`; distinguish structure from tool readiness. |
-| Profile | Show adapter connection, compatibility and reason; optional instructions/evidence. |
+| Installation | Create `.harness/`; retain observed results. Handoff names known blockers/actions. Context reads records. |
+| Python | Document Python 3.11+, pinned dependencies and isolated Windows/macOS/Linux setup. |
+| Profile | Keep connection/status/reason; COMPATIBLE requires matching REVIEW/EXECUTION assessment. Execution claims retain command, exit and output. |
 | Progress | Start with Task initialization; keep Pattern review visible. Record attempts using common statuses. |
-| Skips | Require explicit user instructions. Specification acceptance and final verification cannot be skipped; requirements survive every skip. |
+| Skips | Require explicit user instructions. Specification acceptance and final verification remain mandatory; requirements survive skips. |
 | Completion | Derive from accepted criteria, current source evidence, resolved phases and no uncertain operation. |
 | Recovery | Preserve failures and unfinished work. Inspect uncertain tool activity before retrying. |
 | Maintenance | Check compatibility, retain previous configuration, publish changes and refresh setup status. |
-| Reading | Human pages ≤200 words. LLM guides are sequential; parsers select relevant structured records. |
+| Reading | Human pages ≤200 words and support a decision. LLM guides are sequential; parsers select relevant structured records. |
 
 ## Minimal records
 
-Task, accepted specification, source inventory, phase attempts and conditional tool operations. Writer-supplied bookkeeping replaces transition requests, gate decisions and mutable state snapshots.
+Existing setup/update checks hold adapter assessments. Task records remain unchanged.
 
 ## Boundary
 
-Format 2 tools refuse format 1 records. Existing installations keep matching tools. Compatibility does not prove tool quality. Reviews remain attributed judgments.
+Older records retain matching tools. Compatibility does not prove quality. Reviews remain judgments.

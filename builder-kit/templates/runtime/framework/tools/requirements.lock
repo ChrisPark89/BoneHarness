@@ -1,5 +1,8 @@
+# Python 3.11+. Install with the selected interpreter: python -m pip install -r requirements.lock
+# Direct dependencies
 PyYAML==6.0.3
 jsonschema==4.26.0
+# Transitive dependencies
 attrs==25.4.0
 jsonschema-specifications==2025.9.1
 referencing==0.37.0

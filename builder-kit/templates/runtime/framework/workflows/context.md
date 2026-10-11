@@ -12,7 +12,7 @@ Read the next unresolved phase, current source/specification, open operations, i
 |---|---|
 | Begin a task | Omit task ID |
 | Recover | `--situation recovery --task-id task-id` |
-| Inspect setup | `--situation setup` |
+| Inspect setup checks, activation and connection gaps | `--situation setup` |
 | Inspect maintenance | `--situation maintenance --update-id update-id` |
 | Read a specific journal entry | `--task-id task-id --record e000001` |
 | Structured output | `--format json` |

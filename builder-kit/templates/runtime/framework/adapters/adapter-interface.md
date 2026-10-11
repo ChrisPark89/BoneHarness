@@ -1,19 +1,29 @@
-# Adapter connections
+# Connect and assess an adapter
 
-Open the [profile](../config/repo-profile.yaml) to see each connection, status and reason.
+1. Set its connection in the [profile](../config/repo-profile.yaml), initially NOT_ASSESSED. NOT_CONNECTED means none selected; NEEDS_REVIEW means changed; INCOMPATIBLE means a known mismatch.
+2. Inspect invocation and output interpretation, or run an authorized probe. Compatibility means the interface fits; command success is unnecessary.
+3. Add an assessment to `checks` in the existing installation record or maintenance `update.yaml`:
 
-| Status | Meaning |
-|---|---|
-| NOT_CONNECTED | No adapter selected |
-| NOT_ASSESSED | Connected; compatibility evidence missing |
-| COMPATIBLE | Recorded checks support this interface use |
-| NEEDS_REVIEW | Connection or assumptions changed |
-| INCOMPATIBLE | Known mismatch; reason explains it |
+```yaml
+name: build-interface
+adapter: build
+connection: npm run build
+method: REVIEW
+observations: Inspected package.json and build script; exit status and output identify the outcome.
+result: PASS
+reason: The harness can interpret this interface.
+```
 
-A connection names the command, tool or skill. Add `instructions` only when running or interpreting it needs explanation. Add `evidence` as paths relative to `.harness/`; COMPATIBLE requires retained evidence. Missing evidence is not incompatibility. Compatibility does not certify quality, permissions or task success.
+Use the exact profile connection. For EXECUTION, also record:
 
-Use normal tool output. Record the actual operation, inputs, relevant source/target/environment, outcome and evidence. Explain any LLM interpretation. A real failure stays a failure. Fixture checks demonstrate interface behavior, never completed production work.
+```yaml
+execution:
+  command: npm run build
+  exit_code: 0
+  output: "<actual captured output; empty is allowed>"
+```
 
-Before acting, check repository instructions and current permissions. If submission is uncertain, preserve its handle and reconcile before retrying. Add deadlines, artifact identities or cancellation details to operations only when relevant.
+4. Point the profile's `evidence` at that record. One record can assess multiple adapters; keep one current assessment per adapter. Extra evidence files are optional. Never cite the profile itself as proof.
+5. Set COMPATIBLE only with a matching PASS assessment. Run the installation checker before handoff. Missing support stays NOT_ASSESSED.
 
-Change connections through [maintenance](../workflows/maintenance/harness-maintenance.md). Existing tasks retain their captured configuration. Format 1 histories require their original tools.
+REVIEW records inspection, not claimed execution. The checker validates structure and matching connections, not truthfulness. Later changes use [maintenance](../workflows/maintenance/harness-maintenance.md).

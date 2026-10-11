@@ -8,3 +8,4 @@ candidate_configuration: cfg-2
 status: INSPECTING
 changes: []
 checks: []
+# Adapter assessments go here; follow framework/adapters/adapter-interface.md.

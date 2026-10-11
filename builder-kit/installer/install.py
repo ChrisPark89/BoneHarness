@@ -13,6 +13,8 @@ KIT_VERSION = '2.0.0'
 
 
 def install(repo):
+    if sys.version_info < (3, 11):
+        raise ValueError('Python 3.11 or later is required; use a newer interpreter or the manual installation guide')
     repo = Path(repo)
     if not repo.is_absolute() or not repo.is_dir():
         raise ValueError('--repo-root must be an existing absolute directory')

@@ -8,3 +8,5 @@ activation: PENDING
 created_at: '2000-01-01T00:00:00Z'
 files: []
 checks: []
+# General checks reference retained results/observations in a setup log, not definitions alone.
+# Adapter assessments go here; follow framework/adapters/adapter-interface.md.

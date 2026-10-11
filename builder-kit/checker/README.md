@@ -1,15 +1,23 @@
-# BoneHarness optional checker — format 2
+# Installation checker
 
-Run during setup, updates or diagnosis:
+Use during setup, maintenance or diagnosis. First prepare [Python dependencies](../templates/runtime/framework/tools/README.md).
+
+With the selected environment's Python:
 
 ```sh
-python3 builder-kit/checker/check.py --repo-root /absolute/repository
+python .harness/framework/tools/check.py --repo-root /absolute/repository
 ```
 
-Installed equivalent: `.harness/framework/tools/check.py`. Add `--format json` for saved evidence or `--update artifacts/maintenance/<id>/update.yaml` to inspect a maintenance record.
+The equivalent kit command is `python <kit-path>/checker/check.py --repo-root /absolute/repository`.
 
-The checker reads required files, validates local schemas, checks the profile and evidence references, and reports recorded activation separately. It executes no adapter, downloads nothing and changes no files. A structure PASS neither establishes compatibility meaning nor confirms activation or task completion.
+Add `--format json` to save evidence, or `--update artifacts/maintenance/<id>/update.yaml` to inspect an update.
 
-Exit codes: `0` covered structural checks passed, `1` invalid/incomplete structure or record, `2` invocation/dependency problem. Adapter status/reason are displayed as recorded claims. Missing adapters are not structural failures.
+| Result | What to do |
+|---|---|
+| Exit 0: structure passed | Review setup decisions and connection gaps before starting work. |
+| Exit 1: invalid/incomplete files or records | Resolve the listed diagnostics. |
+| Exit 2: command/dependency problem | Check Python setup and arguments. |
 
-Use the supplied dependency lock with an already provisioned Python 3.11+ environment. Missing dependencies are reported. New tools reject format 1; use the original tools retained with older installations. No legacy switch or automatic migration is provided.
+The checker reads schemas, required files, references and matching adapter assessments. Execution assessments require command, exit status and captured output; review assessments require observations. It changes no files and runs no adapters. Adapter compatibility and activation are recorded claims; structural success cannot establish their meaning or task completion.
+
+For task progress, read its report. For setup readiness and next action, read `.harness/docs/setup.md`.

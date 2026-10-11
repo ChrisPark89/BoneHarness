@@ -1,9 +1,10 @@
 # Check harness setup
 
-1. **Read.** Inspect repository instructions, [profile](../config/repo-profile.yaml) and [setup status](../../docs/setup.md). Format 2 is required; older histories use their original tools.
-2. **Check structure.** Confirm required definitions, guides and local references. Optionally run `python3 .harness/framework/tools/check.py --repo-root /absolute/repository`. Record its report as evidence. A structural PASS proves only the listed checks.
-3. **Review connections.** For each needed adapter, inspect its invocation and evidence interpretation. Save compatibility evidence and update connection/status/reason. Unknown stays NOT_ASSESSED; a known mismatch is INCOMPATIBLE. Compatibility does not establish quality, permission or completed work.
-4. **Activate.** Explicitly load `.harness/README.md` and follow its development guide from the repository. Record that observation before setting installation activation to CONFIRMED. Never add a root instruction pointer automatically.
-5. **Summarize.** Update `docs/setup.md` with structure, activation, issues, next action and evidence. Show the current configuration ID; adapter details remain in the profile. Use [maintenance](maintenance/harness-maintenance.md) for later changes.
+1. **Inspect.** Read repository instructions, [profile](../config/repo-profile.yaml), workflow and [setup summary](../../docs/setup.md).
+2. **Prepare helpers.** Follow [Python setup](../tools/README.md). Retain executable/version, installed dependency versions and `pip check` results; missing prerequisites need action.
+3. **Check structure.** With that Python, run `.harness/framework/tools/check.py --repo-root /absolute/repository`, or follow the installation checklist manually. Save command, exit status and output (or manual observations) in a setup log under `artifacts/installation/`; link it from existing checks. Definitions alone are not execution evidence. The checker does not execute adapters.
+4. **Assess connections.** Follow the [adapter guide](../adapters/adapter-interface.md). Save matching assessments before claiming COMPATIBLE, then rerun the checker. Execution claims need captured results. Research/reviews can inspect files without adapters. Execution-phase gaps need connections or explicit user skips; report their effect.
+5. **Activate.** Explicitly load `.harness/README.md` and its development guide, then record the observation. Do not add repository-root instructions automatically.
+6. **Hand off.** Refresh `docs/setup.md`: can work begin, which phase will wait, action needed, evidence links and next task prompt. Keep under 200 words. Link setup and profile in chat. When clear, say “No known setup blockers”; future tasks can still encounter blockers. Compatibility does not prove tool quality.
 
-No adapter command runs as part of structural checking. No missing adapter prevents inspecting the installed harness.
+After updates, use [maintenance](maintenance/harness-maintenance.md). Preserve original installation evidence and existing task captures.

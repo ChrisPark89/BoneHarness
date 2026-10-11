@@ -7,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+import zipfile
 
 import yaml
 
@@ -77,17 +78,130 @@ class InstallationTests(unittest.TestCase):
         self.save_profile(profile)
         self.assertEqual(1, self.check()[0])
 
-    def test_compatible_evidence_is_checked_without_executing_adapter(self):
-        evidence = self.harness / 'artifacts/installation/compatibility.txt'
-        evidence.write_text('Fixture interface review only; no tool-quality claim.\n')
+    def connect_assessed(self, method='REVIEW', maintenance=False):
+        path = self.harness / ('artifacts/maintenance/adapter/update.yaml' if maintenance
+                               else 'artifacts/installation/installation-record.yaml')
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if maintenance:
+            value = dict(schema_version='2.0.0', record_type='Update', id='adapter',
+                         request='Review adapter interface', base_configuration='old',
+                         candidate_configuration='cfg-1', status='PUBLISHED', changes=[], checks=[])
+        else:
+            value = yaml.safe_load(path.read_text())
+        check = dict(name='test-interface', adapter='test', connection='do-not-execute-this',
+                     method=method, observations='Inspected invocation and interpretable output; fixture review.',
+                     result='PASS', reason='Interface fits; no tool-quality claim.')
+        if method == 'EXECUTION':
+            check['execution'] = dict(command='do-not-execute-this', exit_code=1, output='Fixture failure output')
+        value['checks'] = [check]
+        path.write_text(yaml.safe_dump(value, sort_keys=False))
         profile = self.profile()
         profile['adapters']['test'] = dict(connection='do-not-execute-this', status='COMPATIBLE',
-            reason='Interface reviewed.', evidence=['artifacts/installation/compatibility.txt'])
+            reason='Interface reviewed.', evidence=[path.relative_to(self.harness).as_posix()])
         self.save_profile(profile)
+        return path, value
+
+    def test_compatible_evidence_is_checked_without_executing_adapter(self):
+        self.connect_assessed()
         code, report = self.check()
         self.assertEqual(0, code, report)
         self.assertEqual('COMPATIBLE', report['adapters']['test']['status'])
         self.assertEqual('PENDING', report['activation'])
+
+    def test_compatible_profile_cannot_cite_itself(self):
+        profile = self.profile()
+        profile['adapters']['test'] = dict(connection='test', status='COMPATIBLE', reason='Claim',
+                                         evidence=['framework/config/repo-profile.yaml'])
+        self.save_profile(profile)
+        code, report = self.check()
+        self.assertEqual(1, code, report)
+        self.assertIn('ADAPTER_ASSESSMENT', [d['code'] for d in report['diagnostics']])
+
+    def test_plain_note_is_not_a_structured_assessment(self):
+        path, _ = self.connect_assessed()
+        path.write_text('A check supposedly happened.')
+        self.assertEqual(1, self.check()[0])
+
+    def test_assessment_must_match_adapter_and_connection(self):
+        for field, wrong in [('adapter', 'build'), ('connection', 'different-command')]:
+            with self.subTest(field=field):
+                path, value = self.connect_assessed()
+                value['checks'][0][field] = wrong
+                path.write_text(yaml.safe_dump(value))
+                self.assertEqual(1, self.check()[0])
+
+    def test_assessment_needs_observations_and_passing_conclusion(self):
+        for field, wrong in [('observations', '  '), ('result', 'FAIL')]:
+            with self.subTest(field=field):
+                path, value = self.connect_assessed()
+                value['checks'][0][field] = wrong
+                path.write_text(yaml.safe_dump(value))
+                self.assertEqual(1, self.check()[0])
+
+    def test_execution_requires_command_exit_and_output(self):
+        for field in ('command', 'exit_code', 'output'):
+            with self.subTest(field=field):
+                path, value = self.connect_assessed('EXECUTION')
+                del value['checks'][0]['execution'][field]
+                path.write_text(yaml.safe_dump(value))
+                self.assertEqual(1, self.check()[0])
+
+    def test_failed_command_can_have_compatible_interface(self):
+        self.connect_assessed('EXECUTION')
+        self.assertEqual(0, self.check()[0])
+
+    def test_silent_command_output_is_recorded_explicitly(self):
+        path, value = self.connect_assessed('EXECUTION')
+        value['checks'][0]['execution']['output'] = ''
+        path.write_text(yaml.safe_dump(value))
+        self.assertEqual(0, self.check()[0])
+
+    def test_review_cannot_include_execution_fields(self):
+        path, value = self.connect_assessed()
+        value['checks'][0]['execution'] = dict(command='test', exit_code=0, output='')
+        path.write_text(yaml.safe_dump(value))
+        self.assertEqual(1, self.check()[0])
+
+    def test_published_maintenance_assessment_is_supported(self):
+        self.connect_assessed(maintenance=True)
+        self.assertEqual(0, self.check()[0])
+
+    def test_assessment_does_not_cite_itself_or_profile_as_support(self):
+        for target in ('framework/config/repo-profile.yaml', 'artifacts/installation/installation-record.yaml'):
+            with self.subTest(target=target):
+                path, value = self.connect_assessed()
+                value['checks'][0]['evidence'] = [target]
+                path.write_text(yaml.safe_dump(value))
+                self.assertEqual(1, self.check()[0])
+
+    def test_empty_or_duplicate_assessments_are_rejected(self):
+        for mode in ('empty', 'duplicate'):
+            with self.subTest(mode=mode):
+                path, value = self.connect_assessed()
+                value['checks'] = [] if mode == 'empty' else value['checks'] * 2
+                path.write_text(yaml.safe_dump(value))
+                self.assertEqual(1, self.check()[0])
+
+    def test_unchecked_maintenance_cannot_support_compatible(self):
+        path, value = self.connect_assessed(maintenance=True)
+        value['status'] = 'STAGED'
+        path.write_text(yaml.safe_dump(value))
+        self.assertEqual(1, self.check()[0])
+
+    def test_unassessed_connection_does_not_need_assessment(self):
+        profile = self.profile()
+        profile['adapters']['test'] = dict(connection='test', status='NOT_ASSESSED', reason='Review pending.')
+        self.save_profile(profile)
+        self.assertEqual(0, self.check()[0])
+
+    def test_captured_user_installation_fails_evidence_checks(self):
+        archive = ROOT / 'archive/verification/2026-10-11-installation-user-test.zip'
+        with zipfile.ZipFile(archive) as saved:
+            for name in ('framework/config/repo-profile.yaml', 'artifacts/installation/installation-record.yaml'):
+                (self.harness / name).write_bytes(saved.read('demo/.harness/' + name))
+        code, report = self.check()
+        self.assertEqual(1, code, report)
+        self.assertIn('ADAPTER_ASSESSMENT', [d['code'] for d in report['diagnostics']])
 
     def test_evidence_cannot_escape_harness(self):
         profile = self.profile()

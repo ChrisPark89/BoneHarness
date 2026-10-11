@@ -1,15 +1,18 @@
 # Harness setup
 
-Configuration: `cfg-1`. Kit: `2.0.0`.
+**Can I start? Setup review is pending.**
 
-| Check | Status |
+Configuration: `cfg-1`. Update this page after setup or maintenance.
+
+| Decision | Current finding / action |
 |---|---|
-| Installed structure | NOT_CHECKED |
-| Entry-point activation | PENDING |
-| Adapter compatibility | See [profile](../config/repo-profile.yaml) |
+| Are instructions and tools installed correctly? | Not checked; follow the setup guide. |
+| Can the LLM use the Python helpers? | Not checked; confirm interpreter and dependencies. |
+| Have the LLM entry guides been loaded? | Pending. |
+| Which phases need attention? | Review the [adapter profile](../config/repo-profile.yaml). |
 
-Next: inspect repository instructions, check the installed files, then explicitly load `.harness/README.md` and its development guide. Record actual checks and evidence in `artifacts/installation/installation-record.yaml`. Mark activation CONFIRMED only after successful loading.
+**Next:** ask the installing LLM to finish setup and replace pending entries with evidence-backed findings.
 
-The optional checker examines structure and declared local references. It neither executes adapters nor confirms compatibility meaning, activation or task completion. Missing dependencies remain visible; do not install them implicitly.
+When handing off, name known blockers and affected phases. Otherwise say “No known setup blockers for the configured workflow.” Do not promise that future phases cannot wait. Execution phases need compatible connections or an explicit user skip; specification acceptance and final verification cannot be skipped. Research and reviews can use direct inspection without dedicated adapters.
 
-Refresh this summary after setup or maintenance. It describes the named configuration, not a task's progress. Keep it under 200 words.
+Link the profile, supporting checks and development entry point. List only unresolved decisions. Record the Python executable for LLM use. Keep this page under 200 words; detailed installation records belong in `artifacts/installation/`.

@@ -1,25 +1,26 @@
 # BoneHarness implementation plan
 
-Scope: [BoneHarness format 2 specification](specification.md). Preserve existing installations and evidence.
+Scope: [specification](specification.md). Preserve existing histories and installations.
 
-1. [x] Save the complete previous kit, tests and documents in a hashed archive.
-2. [x] Replace the verbose profile with connection, status and reason; update installer, checker and maintenance together.
-3. [x] Replace enumerated transitions with phases and shared statuses; simplify journal, recovery, context and reports together.
-4. [x] Remove obsolete templates, schemas and duplicated records; retain evidence and uncertainty checks.
-5. [x] Update current documentation; clearly label historical demonstrations.
-6. [x] Review the integrated implementation and correct inconsistencies.
-7. [x] Check fresh installation, ordinary progress, failure/retry, authorized skips, mandatory specification phases, stale evidence and recovery.
-8. [x] Record verified behavior and remaining limitations.
-9. [x] Preserve the old demo harness; install format 2 and exercise success and failure–repair.
+## Completed foundation
 
-10. [x] Brand the current kit and documentation as BoneHarness; preserve installed paths and historical evidence.
+- [x] Compact profile; ordered phases and evidence-backed progress.
+- [x] Setup, maintenance, recovery and short human reports.
+- [x] Python setup, installation prompt and actionable handoff.
+- [x] Capture the independent installation's evidence failure; leave the demo unchanged.
 
-## Ownership
+## Evidence enforcement
 
-- Installation agent: profile, setup, maintenance, installer and checker.
-- Development agent: workflow, records, context, journal and reporter.
-- Main agent: documentation, integration review and verification summary.
+- [x] Reproduce acceptance of self-referencing evidence with a regression case.
+- [x] Extend existing installation/update checks with adapter, connection, method and observations.
+- [x] Require execution details only when execution is claimed; permit nonzero exits for compatible interfaces.
+- [x] Check matching assessments before accepting COMPATIBLE; preserve the compact profile.
+- [x] Provide a completed example and short sequential instructions.
+- [x] Run regression checks, review results and record remaining limits.
 
-Historical tests retain matching tools; their results do not establish format 2 correctness.
+## Installation retest follow-up
 
-Result: [67 passing checks and recorded limits](verification.md).
+- [x] Clarify retained setup results and reuse one evidence log; existing record fields suffice.
+- [x] Limit readiness wording to known setup blockers. Documentation only; checker behavior unchanged.
+
+No new evidence service, task state or per-adapter record files. Both installed demos remain unchanged; captured user-test files exercise the new checker in temporary repositories.
