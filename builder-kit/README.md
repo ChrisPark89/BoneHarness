@@ -1,6 +1,6 @@
 # BoneHarness builder kit
 
-Requires **Node.js 22+**. No Python or environment activation.
+**Node.js 22+** · [MIT License](LICENSE). No environment activation.
 
 Build and install from source:
 

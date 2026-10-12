@@ -16,5 +16,6 @@
   "devDependencies": {
     "prettier": "3.6.2",
     "yaml": "2.8.1"
-  }
+  },
+  "license": "MIT"
 }

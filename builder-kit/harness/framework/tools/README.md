@@ -22,3 +22,5 @@ node .harness/framework/tools/check.cjs --repo-root /absolute/repository
 Use `node <tool> --help` for arguments. The LLM normally runs these tools; humans can use `bh` or ask for the same results in chat.
 
 If Node.js or a bundle is missing, show the setup gap. Do not claim checks ran. Install the required runtime or restore the matching kit release before retrying.
+
+Bundled dependencies retain their own [license notices](THIRD_PARTY_NOTICES.txt).

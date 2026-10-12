@@ -28,4 +28,4 @@ Humans review specifications in `.harness/docs/` and recorded results in chat or
 | [Research](docs/research/README.md) | Background references |
 | [Archive](archive/README.md) | Earlier designs and matching implementations |
 
-Project: [ChrisPark89/BoneHarness](https://github.com/ChrisPark89/BoneHarness). Only `builder-kit/` is distributed. The [JavaScript demo](tests/demo/README.md) exercises successful execution and failure–repair results.
+[MIT License](LICENSE) · [GitHub](https://github.com/ChrisPark89/BoneHarness). Only `builder-kit/` is distributed. The [JavaScript demo](tests/demo/README.md) exercises successful execution and failure–repair results.

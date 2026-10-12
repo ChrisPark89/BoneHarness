@@ -23,3 +23,5 @@ Prefer chat? Ask the LLM for recorded results. Daily CLI use is optional. Export
 Without `bh`, run `node .harness/framework/tools/view.cjs --repo-root <absolute-repository>`; add `--task-id <id>` for task results.
 
 `docs/` holds specifications and requested exports. `framework/` holds instructions/tools. `artifacts/` holds records and evidence for investigation. Setup readiness and task completion are separate.
+
+BoneHarness files: [MIT License](framework/LICENSE). Your application retains its own license.
