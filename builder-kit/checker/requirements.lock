@@ -1,2 +1,0 @@
-# Canonical installed runtime pins; provisioning remains an explicit step.
--r ../templates/runtime/framework/tools/requirements.lock

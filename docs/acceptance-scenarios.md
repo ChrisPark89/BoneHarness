@@ -1,20 +1,22 @@
-# Acceptance scenarios — format 2
+# Acceptance scenarios
 
-These are project checks, not extra records required in installed harnesses.
+Expectations; see [results](verification.md).
 
 | Scenario | Expected result |
 |---|---|
-| Fresh installation | Only `.harness/` created; incomplete discovery visible. |
-| Missing adapter | Its phase waits; other eligible work remains usable. |
-| Replace adapter | Compatibility evidence and reason recorded; old task configuration preserved. |
-| Ordinary task | One attempt per phase; concise evidence-linked report. |
-| Failure then repair | Earlier failure retained; next attempt can resolve it. |
-| User skips testing | Original instruction linked; test requirements remain enforceable. |
-| Skip specification or final verification | Rejected. |
-| Evidence missing or source changed | Completion unsupported. |
-| Interrupted tool operation | Resume by checking its outcome; uncertainty blocks completion. |
-| Harness configuration changes | Existing task continues against its captured configuration. |
-| Large history | Context command returns selected records rather than the entire file. |
-| Old-format records | Clear rejection; originals remain usable with matching tools. |
-
-See [verification](verification.md) for checks actually run. A scenario listed here is an expectation, not a passing result.
+| Fresh installation | Only `.harness/` created; discovery gaps visible. |
+| Missing adapter | Affected phase waits; eligible work remains usable. |
+| Replace adapter | Assessment recorded; task configuration preserved. |
+| Ordinary task | Same recorded results in CLI/chat; export only on request. |
+| Kit upgrade | Preserve settings/history; identify incompatible unfinished tasks. |
+| Interrupted upgrade | Restore owned bytes; preserve later edits and show recovery gaps. |
+| Failure then repair | Failure retained; replacement attempt can resolve it. |
+| User skips testing | Instruction linked; specification requirements remain. |
+| Skip specification/final verification | Rejected. |
+| HUMAN checkpoint | Block until the unchanged result is approved; revisions need renewed approval. |
+| Changed source/evidence | Refresh affected proof before approval/completion. |
+| Command output | Keep original output/exit; reject rewritten/replayed results. |
+| Interrupted operation | Reconcile outcome; uncertainty blocks completion. |
+| Configuration changes | Existing task retains captured settings. |
+| Large history | Parse relevant records into bounded context. |
+| Older histories | Retain originals and matching tools. |

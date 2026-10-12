@@ -1,0 +1,55 @@
+{
+  "entries": 14,
+  "last_hash": "sha256:3f0e6ef27bc586f512f6a3074c901e244a21d86ddd83b94417ae2344295d0a6e",
+  "status": "COMPLETE",
+  "phases": [
+    {
+      "id": "initialization",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "research",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "pattern_review",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "specification",
+      "status": "PASS"
+    },
+    {
+      "id": "verification_plan",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "implementation_plan",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "implementation",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "preflight",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "build",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "testing",
+      "status": "USER_SKIPPED"
+    },
+    {
+      "id": "specification_verification",
+      "status": "PASS"
+    },
+    {
+      "id": "final_review",
+      "status": "USER_SKIPPED"
+    }
+  ]
+}

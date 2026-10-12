@@ -1,19 +1,20 @@
 # BoneHarness implementation status
 
-**Assessment enforcement implemented.** [Verification](verification.md): 81 tests passed on macOS/Python 3.14.
+**TypeScript conversion implemented; 156 tests passed on Node.js 22 and 24.** See [conversion spec](typescript/spec.md), [plan](typescript/implementation-plan.md) and [quick start](../builder-kit/README.md).
 
-| Area | Current design |
+| Area | Current implementation |
 |---|---|
-| Adapter profile | 29 lines; connection, status, reason; optional instructions/evidence |
-| Development | 12 phases with shared statuses; Task initialization replaces NEW/BASELINE |
-| Progress | One phase record per attempt; no separate request/decision/event or mutable state file |
-| Tools | COMPATIBLE requires a matching assessment; execution claims retain command, exit and output |
-| Human review | Short specification, report and setup/update pages |
-| Recovery | Retained failures, current-source checks and unresolved operation handling |
-| Maintenance | Inspect, stage, check, publish, refresh status |
+| Commands | `init`, `status`, `doctor`, read-only `config`, compatible `update` |
+| First use | Create `.harness/`, show gaps, begin eligible work |
+| Task selection | List IDs; use `status --task ID` |
+| Human review | HUMAN except initialization; configurable per phase |
+| Results | Shared recorded facts for CLI/chat; export only on request |
+| Updates | Preview, ownership checks, preserved settings/history |
+| Recovery | Restore interrupted writes; preserve later edits |
+| Packaging | npm package; Node.js 22+; self-contained installed helpers |
 
-The package now includes a Python setup guide and local environment exclusions. Obsolete definitions and tests are preserved with their matching implementation in the [format 1 archive](../archive/2026-10-10-format-1.zip).
+Specifications, README, logs and histories remain. No duplicate summary pages are generated.
 
-Existing installations are not automatically converted. The [demo](../tests/demo/README.md) was freshly installed with format 2; its old harness is archived. Automated checks also use disposable installations.
+Python installations use a different writer protocol. Automatic conversion of an installed Python harness is unsupported; updates stop unchanged. Historical records retain their matching tools.
 
-The independent [installation retest](reviews/2026-10-11-installation-retest.md) passed structural review. Native Windows/Linux and a development task through that installation remain pending.
+Native Windows/Linux execution remains pending. CI covers Windows/macOS/Linux with Node.js 22/24. The independent demo installation remains untouched.

@@ -6,7 +6,7 @@
 | Structure | Checker command, exit status and output; or recorded manual observations |
 | Profile | Every adapter shows connection, status and reason; no invented compatibility |
 | Connections | Matching assessments; execution claims retain command, exit status and output; gaps name the affected phase/action |
-| Python helpers | Python executable/version, installed dependency versions and `pip check` result |
+| Node.js helpers | Node.js version and actual installed-checker result |
 | Activation | Installed README and development guide were explicitly loaded |
 | Handoff | Known blockers, next prompt and evidence; no guarantees about future phases |
 

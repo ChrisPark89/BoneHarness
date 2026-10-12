@@ -1,0 +1,35 @@
+{
+  "name": "boneharness",
+  "version": "3.0.0",
+  "description": "Portable repository harness builder kit",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "bin": {
+    "bh": "dist/bh.cjs"
+  },
+  "files": [
+    "dist/",
+    "harness/",
+    "release.json",
+    "README.md",
+    "INSTALLER_SPEC.md",
+    "installer/*.md",
+    "examples/"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "npm run build && tsc -p tsconfig.test.json && node --test ../.test-dist/tests/typescript/*.test.js",
+    "prepack": "npm run build"
+  },
+  "devDependencies": {
+    "ajv": "8.17.1",
+    "ajv-formats": "3.0.1",
+    "yaml": "2.8.1",
+    "@types/node": "22.18.6",
+    "esbuild": "0.25.10",
+    "typescript": "5.9.3"
+  }
+}

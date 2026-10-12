@@ -1,27 +1,28 @@
 # What the BoneHarness kit contains
 
-An LLM installs and adapts this kit, then follows the installed harness for work.
+An LLM installs this kit, then follows the installed harness.
 
 | File or directory | Why it exists |
 |---|---|
 | `builder-kit/README.md` | Starting point |
 | `INSTALLER_SPEC.md` | Installation steps |
 | `installer/bootstrap-prompt.md` | Prompt to give the LLM |
-| `installer/install.py` | Creates a fresh scaffold |
+| `src/installer/install.ts` | Creates a scaffold |
+| `src/cli/`, `package.json`, `release.json` | Commands, packaging and upgrade ownership |
 | Installation checklist/reference | Shows what still needs discovery or verification |
-| `templates/runtime/README.md` | Installed situation index |
+| `harness/README.md` | Installed situation index |
 | `framework/config/` | Human-readable adapter connections and compatibility |
 | `framework/workflows/` | What the LLM does next, including recovery |
-| `framework/adapters/` | How to interpret ordinary skill output with evidence |
-| `framework/templates/` | Small record examples and machine-checked formats |
-| `framework/tools/` | Saves progress, selects context and generates reports |
-| `checker/` | Optional, recommended installation checks |
+| `framework/templates/` | Blank specifications and records |
+| `framework/schemas/` | Machine validation definitions |
+| `dist/helpers/` | Bundled tools installed into `framework/tools/` |
+| `src/checker/` | Installation checks |
 | `examples/` | Small configuration examples |
 
-Paths beginning `framework/` are inside `templates/runtime/`.
+`framework/` lives inside `harness/`.
 
-After installation, open `.harness/docs/setup.md`. During work, read the task’s specification and report. Inspect process records when diagnosing issues.
+Use chat or `bh status` for results. Review specifications; export reports when needed. Inspect records when diagnosing.
 
-Specification acceptance and final verification are mandatory. Other phases require explicit user approval to skip. Compatibility does not prove tool quality.
+Specification acceptance and final verification are mandatory. Other skips require user approval. Compatibility does not prove tool quality.
 
 Project `docs/`, `tests/` and `archive/` are not distributed.

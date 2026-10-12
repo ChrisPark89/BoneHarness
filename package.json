@@ -1,0 +1,20 @@
+{
+  "name": "boneharness-development",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "builder-kit"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace boneharness",
+    "typecheck": "npm run typecheck --workspace boneharness",
+    "test": "npm test --workspace boneharness",
+    "check:docs": "node .test-dist/tests/check-documents.js",
+    "format": "prettier --write \"builder-kit/src/**/*.ts\" \"builder-kit/scripts/*.mjs\" \"tests/**/*.ts\"",
+    "format:check": "prettier --check \"builder-kit/src/**/*.ts\" \"builder-kit/scripts/*.mjs\" \"tests/**/*.ts\""
+  },
+  "devDependencies": {
+    "prettier": "3.6.2",
+    "yaml": "2.8.1"
+  }
+}

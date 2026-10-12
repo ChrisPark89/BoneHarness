@@ -2,29 +2,33 @@
 schema_version: "2.0.0"
 repository: example-project
 configuration_id: cfg-1
+reviews:
+  default: LLM
+  phases:
+    specification: HUMAN
 adapters:
   research:
     connection: null
-    status: NOT_CONNECTED
-    reason: Choose an adapter when needed.
+    status: ACTION_NEEDED
+    reason: Choose a tool, ask the LLM to choose, or request a skip.
   pattern_search:
     connection: null
-    status: NOT_CONNECTED
-    reason: Choose an adapter when needed.
+    status: ACTION_NEEDED
+    reason: Choose a tool, ask the LLM to choose, or request a skip.
   preflight:
     connection: null
-    status: NOT_CONNECTED
-    reason: Choose an adapter when needed.
+    status: ACTION_NEEDED
+    reason: Choose a tool, ask the LLM to choose, or request a skip.
   build:
     connection: null
-    status: NOT_CONNECTED
-    reason: Choose an adapter when needed.
+    status: ACTION_NEEDED
+    reason: Choose a tool, ask the LLM to choose, or request a skip.
   test:
     connection: python3 -m unittest discover -s tests
-    status: NOT_ASSESSED
-    reason: Check this repository before use.
+    status: ACTION_NEEDED
+    reason: Ask the LLM to check this connection and record compatibility evidence.
     instructions: Run from repository root; preserve output and failures.
   final_review:
     connection: null
-    status: NOT_CONNECTED
-    reason: Choose an adapter when needed.
+    status: ACTION_NEEDED
+    reason: Choose a tool, ask the LLM to choose, or request a skip.

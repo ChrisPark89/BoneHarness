@@ -1,25 +1,21 @@
-# BoneHarness specification — format 2
+# BoneHarness specification
 
-**Design:** ordered phases and evidence-backed progress. [Plan](implementation-plan.md).
+[Plan](implementation-plan.md) · [CLI requirements](cli-mvp/spec.md) · [Layout](artifact-layout.md)
 
-## Required behavior
-
-| Area | Requirement |
+| Area | Required behavior |
 |---|---|
-| Installation | Create `.harness/`; retain observed results. Handoff names known blockers/actions. Context reads records. |
-| Python | Document Python 3.11+, pinned dependencies and isolated Windows/macOS/Linux setup. |
-| Profile | Keep connection/status/reason; COMPATIBLE requires matching REVIEW/EXECUTION assessment. Execution claims retain command, exit and output. |
-| Progress | Start with Task initialization; keep Pattern review visible. Record attempts using common statuses. |
-| Skips | Require explicit user instructions. Specification acceptance and final verification remain mandatory; requirements survive skips. |
-| Completion | Derive from accepted criteria, current source evidence, resolved phases and no uncertain operation. |
-| Recovery | Preserve failures and unfinished work. Inspect uncertain tool activity before retrying. |
-| Maintenance | Check compatibility, retain previous configuration, publish changes and refresh setup status. |
-| Reading | Summaries ≤200 words. Sequential guides; parsed context stays together up to 8,000 characters; larger views paginate completely. |
+| Installation | Create `.harness/`; retain checks and name blockers/actions. |
+| Layout | Install from `builder-kit/harness/`; group workflows; separate templates and schemas. |
+| Runtime | Node.js 22+, bundled helpers; Windows/macOS/Linux. |
+| Profile | 11 adapters; OK/ACTION_NEEDED, next action, choices and review settings. |
+| Progress | Task initialization, Pattern review and shared statuses. |
+| Reviews | HUMAN except initialization by default; configurable per phase. Await explicit approval of the unchanged result. |
+| Verification planning | Map criteria to checks, expectations, prerequisites and gaps. |
+| Skips | Explicit user instruction. Specification acceptance and final verification remain mandatory. |
+| Commands | Preserve output/exit and hash. Reject rewritten evidence; judge phases separately. |
+| Completion | Accepted criteria, resolved phases/reviews, current evidence and no uncertain operation. |
+| Recovery | Preserve failures; refresh stale evidence before retry. |
+| Changes | Separate tools/settings changes from BoneHarness updates; preserve settings, task captures and history. |
+| Reading | Human summaries ≤200 words; parsed context paginates beyond 8,000 characters. |
 
-## Minimal records
-
-Existing setup/update checks hold adapter assessments. Task records remain unchanged.
-
-## Boundary
-
-Older records retain matching tools. Compatibility does not prove quality. Reviews remain judgments.
+Hashes cannot authenticate human replies. Captures retain original paths/schemas.

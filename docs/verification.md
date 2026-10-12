@@ -1,23 +1,23 @@
-# BoneHarness verification
+# Verification
 
-**2026-10-11: 81 tests passed** on macOS / Python 3.14.
+Framework reorganization checked on macOS arm64, Node.js 24.10.0, 2026-10-12.
 
-| Coverage | Tests |
-|---|---:|
-| Installation, assessments, maintenance and context | 40 |
-| Development, skips, evidence and recovery | 23 |
-| Parsing, paths and source inventory | 17 |
-| Installed CLI with real JavaScript build/test | 1 |
+| Check | Result |
+|---|---|
+| Full suite | 164 passed; 1 Windows-only skip |
+| Layout regressions | 8 passed; installation, history, reviews, continuation, conflicts, rollback and invalid layouts |
+| Actual pre-change kit upgrade | Pending review stayed BLOCKED; completed task stayed COMPLETE; captures/history unchanged |
+| Original-kit baseline | Old source layout accepted for ownership verification |
+| npm package | Offline install outside checkout; bundled helpers work |
+| JavaScript walkthrough | Installed harness built/tested the temporary demo successfully |
+| Typecheck/format | Passed |
+| Documents | 46 pages, 101 links and human-page limits passed |
+| Native Windows/Linux | Pending; CI matrix configured |
 
-The captured user installation passed the old checker and fails the improved assessment checks. Valid inspections and execution records pass; nonzero command exits do not imply incompatibility. Missing, mismatched and circular assessments fail.
+Six layout tests failed before implementation. Three pre-existing baseline failures were resolved by shortening hints and aligning assertions with the existing eleven-question setup and bounded pagination.
 
-Documentation links and human-page limits passed. The independent demo stayed unchanged: 1,187 file hashes matched. Regression scenarios used temporary repositories.
+Run `npm ci`, `npm run typecheck`, `npm test`, `npm run check:docs` and `npm run format:check`.
 
-```sh
-python3 -B -m unittest discover -s tests -p 'test_v2_*.py' -q
-python3 -B tests/check-documents.py
-```
+Earlier conversion results: [TypeScript review](typescript/final-review.md), [original case mapping](../tests/typescript/coverage-map.json). These do not establish automatic Python-runtime migration.
 
-The checker validates assessment structure and association, not truthfulness or tool quality. Native Windows/Linux execution and Python 3.11 remain unverified. The [installation retest](reviews/2026-10-11-installation-retest.md) passed structural review; subsequent edits clarify guidance only.
-
-[User-test findings](reviews/2026-10-11-installation-user-test.md) retain the failure example.
+Independent demo installations and historical fixtures were not changed. No commit, push or package publication was performed.

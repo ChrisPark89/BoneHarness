@@ -1,0 +1,12 @@
+action: review
+record: e000006 # The pending result shown to the human; not an arbitrary earlier record.
+approval:
+  instruction:
+    reference: {kind: LOCAL, scope: HARNESS, path: artifacts/development/TASK/review-e000006.txt}
+    provenance: REVIEW
+    summary: Original exchange showing the review reference and the human reply.
+  user: Replace with the actual reviewer.
+  quote: Replace with their exact approval words.
+  review: Explain which presented result the response approves.
+# Retain the original exchange; never invent a human reply.
+# journal.cjs binds approval to the unchanged pending result.

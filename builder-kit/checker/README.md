@@ -1,23 +1,17 @@
 # Installation checker
 
-Use during setup, maintenance or diagnosis. First prepare [Python dependencies](../templates/runtime/framework/tools/README.md).
-
-With the selected environment's Python:
+Use during setup, maintenance or diagnosis. Requires [Node.js 22+](../harness/framework/tools/README.md).
 
 ```sh
-python .harness/framework/tools/check.py --repo-root /absolute/repository
+node .harness/framework/tools/check.cjs --repo-root /absolute/repository
 ```
 
-The equivalent kit command is `python <kit-path>/checker/check.py --repo-root /absolute/repository`.
+The equivalent kit command uses `builder-kit/dist/helpers/check.cjs` after building.
 
-Add `--format json` to save evidence, or `--update artifacts/maintenance/<id>/update.yaml` to inspect an update.
-
-| Result | What to do |
+| Result | Meaning |
 |---|---|
-| Exit 0: structure passed | Review setup decisions and connection gaps before starting work. |
-| Exit 1: invalid/incomplete files or records | Resolve the listed diagnostics. |
-| Exit 2: command/dependency problem | Check Python setup and arguments. |
+| Exit 0 | Structure checks passed; inspect recorded setup gaps |
+| Exit 1 | Structure or evidence references need attention |
+| Exit 2 | Check arguments, Node.js availability or file access |
 
-The checker reads schemas, required files, references and matching adapter assessments. Execution assessments require command, exit status and captured output; review assessments require observations. It changes no files and runs no adapters. Adapter compatibility and activation are recorded claims; structural success cannot establish their meaning or task completion.
-
-For task progress, read its report. For setup readiness and next action, read `.harness/docs/setup.md`.
+The checker verifies structure, schemas and retained references. It does not execute adapters, authenticate human approvals or certify tool quality. `bh doctor` includes these checks and presents next actions.

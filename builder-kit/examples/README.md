@@ -1,6 +1,6 @@
 # Adapter assessment example
 
-The [connected profile](connected-profile.yaml) starts NOT_ASSESSED. To establish compatibility, follow the installed [adapter guide](../templates/runtime/framework/adapters/adapter-interface.md).
+The [connected profile](connected-profile.yaml) starts ACTION_NEEDED. To establish compatibility, follow the installed [adapter guide](../harness/framework/workflows/shared/adapter-interface.md).
 
 Append this **example shape**, filled with actual findings, to the existing installation record's `checks`:
 
@@ -17,7 +17,7 @@ reason: Outcome and diagnostics can be interpreted.
 Then the profile's test entry can reference:
 
 ```yaml
-status: COMPATIBLE
+status: OK
 evidence:
   - artifacts/installation/installation-record.yaml
 ```

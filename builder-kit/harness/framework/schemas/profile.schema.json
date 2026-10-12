@@ -1,0 +1,351 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Repository profile, format 2",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "repository": {
+      "type": "string",
+      "minLength": 1
+    },
+    "configuration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "adapters": {
+      "type": "object",
+      "properties": {
+        "research": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "pattern_search": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "specification": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "verification_plan": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "implementation_plan": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "implementation": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "preflight": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "build": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "test": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "specification_verification": {
+          "$ref": "#/$defs/Adapter"
+        },
+        "final_review": {
+          "$ref": "#/$defs/Adapter"
+        }
+      },
+      "required": [
+        "research",
+        "pattern_search",
+        "preflight",
+        "build",
+        "test",
+        "final_review"
+      ],
+      "additionalProperties": false
+    },
+    "reviews": {
+      "type": "object",
+      "properties": {
+        "default": {
+          "enum": [
+            "HUMAN",
+            "LLM"
+          ]
+        },
+        "phases": {
+          "type": "object",
+          "properties": {
+            "initialization": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "research": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "pattern_review": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "specification": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "verification_plan": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "implementation_plan": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "implementation": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "preflight": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "build": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "testing": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "specification_verification": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            },
+            "final_review": {
+              "enum": [
+                "HUMAN",
+                "LLM"
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "default",
+        "phases"
+      ],
+      "additionalProperties": false
+    },
+    "setup_answers": {
+      "description": "Legacy setup answers retained for reading older profiles. New setup writes directly to adapters.",
+      "type": "object",
+      "properties": {
+        "initialization": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "research": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "pattern_review": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "specification": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "verification_plan": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "implementation_plan": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "implementation": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "preflight": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "build": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "testing": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "specification_verification": {
+          "$ref": "#/$defs/SetupAnswer"
+        },
+        "final_review": {
+          "$ref": "#/$defs/SetupAnswer"
+        }
+      },
+      "additionalProperties": false,
+      "deprecated": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "repository",
+    "configuration_id",
+    "adapters",
+    "reviews"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "Adapter": {
+      "type": "object",
+      "properties": {
+        "connection": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "OK",
+            "ACTION_NEEDED",
+            "NOT_CONNECTED",
+            "NOT_ASSESSED",
+            "COMPATIBLE",
+            "NEEDS_REVIEW",
+            "INCOMPATIBLE"
+          ],
+          "description": "Write OK or ACTION_NEEDED. Other values are accepted only for older profiles."
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instructions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "connection",
+        "status",
+        "reason"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "NOT_CONNECTED"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "connection": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "NOT_ASSESSED",
+                  "COMPATIBLE",
+                  "NEEDS_REVIEW",
+                  "INCOMPATIBLE"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "connection": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "status": {
+                    "const": "COMPATIBLE"
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "status": {
+                    "const": "OK"
+                  },
+                  "connection": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "then": {
+            "required": [
+              "evidence"
+            ]
+          }
+        }
+      ]
+    },
+    "SetupAnswer": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolved": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "answer",
+        "resolved"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

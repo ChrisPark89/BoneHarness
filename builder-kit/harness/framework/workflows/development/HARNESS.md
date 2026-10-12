@@ -1,0 +1,9 @@
+# Start or continue development
+
+1. **Locate.** Read repository instructions, recorded readiness (`bh status` or installed `view.cjs`) and [profile](../../config/repo-profile.yaml). Preserve the request. Initialize task records with the [semantic writer](journal-protocol.md); no initialization adapter is needed.
+2. **Read context.** Use the [context helper](../shared/context.md). Read every page: next phase, requirements, issues and open operations. Keep `context_id`; refresh when changed.
+3. **Act.** Check permissions. Use the current phase’s configured adapter/instructions when present; otherwise perform permitted LLM work. Supply one step using the [templates](../../templates/development). Record intent before dispatch; use [command capture](command-capture.md). Preserve other tools’ original responses/handles. Explain interpretation in the phase summary. Use [recovery](../shared/recovery.md) for uncertainty.
+4. **Verify.** Check phase/specification requirements against evidence. Specification acceptance and final verification are mandatory. Other skips need explicit user instruction with attributed scope review. Reconcile earlier skips when accepting specifications. Requirements survive skips.
+5. **Continue.** Record results and follow [human-review checkpoints](human-review.md); stop for pending approval. Changed source invalidates affected proof; retain failures. Save report JSON at handoff; present `bh status --task ID` (or `view.cjs --task-id ID`) in chat. Export Markdown only on request. Missing helpers leave claims unverified.
+
+Record operations for execution claims or interruption recovery. Read-only inspection cites files directly. For changes, use [tools/settings](../maintenance/harness-maintenance.md) or [Update BoneHarness](../updates/update-boneharness.md); tasks keep captured configuration.

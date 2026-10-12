@@ -1,0 +1,14 @@
+action: operation
+operation_id: build-1
+phase: build
+status: INTENT
+connection: Replace with the captured compatible build connection.
+command: [node, scripts/build.mjs] # Exact authorized arguments; working directory is the repository root.
+evidence: []
+# inputs: {target: concrete target, environment: actual runtime identity}
+# deadline: UTC deadline ending in Z, when required
+# After INTENT, read context and run tools/command.cjs with this operation ID.
+# It records RUNNING, captures output, then records the operation result.
+# Use its returned evidence reference when judging the phase; never rewrite output.
+# Non-command tool: omit command; record its handle and original response instead.
+# See workflows/development/command-capture.md for both paths.

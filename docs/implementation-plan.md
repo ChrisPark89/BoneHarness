@@ -1,28 +1,34 @@
 # BoneHarness implementation plan
 
-Scope: [specification](specification.md). Preserve existing histories and installations.
+Scope: [specification](specification.md).
+
+[CLI MVP](cli-mvp/spec.md) · [TypeScript plan](typescript/implementation-plan.md) · [Execution notes](cli-mvp/implementation.md)
 
 ## Completed foundation
 
-- [x] Compact profile; ordered phases and evidence-backed progress.
-- [x] Setup, maintenance, recovery and short human reports.
-- [x] Python setup, installation prompt and actionable handoff.
-- [x] Capture the independent installation's evidence failure; leave the demo unchanged.
+- [x] Compact profiles, ordered phases, explicit skips and short human reports.
+- [x] Installation assessments, maintenance and recovery.
+- [x] Original command capture; reject rewritten/replayed evidence.
+- [x] Context stays together up to 8,000 characters, then paginates.
 
-## Evidence enforcement
+## Configurable human review
 
-- [x] Reproduce acceptance of self-referencing evidence with a regression case.
-- [x] Extend existing installation/update checks with adapter, connection, method and observations.
-- [x] Require execution details only when execution is claimed; permit nonzero exits for compatible interfaces.
-- [x] Check matching assessments before accepting COMPATIBLE; preserve the compact profile.
-- [x] Provide a completed example and short sequential instructions.
-- [x] Run regression checks, review results and record remaining limits.
+- [x] Add profile defaults and per-phase review overrides.
+- [x] Derive BLOCKED while a valid result awaits approval; preserve existing phases.
+- [x] Bind approval to the unchanged presented record and retained human exchange.
+- [x] Distinguish pending specifications from accepted specifications.
+- [x] Require fresh evidence after source/result changes; retain explicit skip rules.
+- [x] Expose review status through context and short reports.
+- [x] Clarify verification preparation and update installed guides/templates.
+- [x] Run the full suite and independent review; resolve findings.
+- [x] Exercise the installed instructions with a development LLM.
 
-## Installation retest follow-up
+Scripted scenarios use LLM review. Existing demos remain untouched.
 
-- [x] Clarify retained setup results and reuse one evidence log; existing record fields suffice.
-- [x] Limit readiness wording to known setup blockers. Documentation only; checker behavior unchanged.
+## Phase adapters
 
-- [x] Raise context pages to 8,000 characters; retain large-view pagination. Existing assertions updated; tests not rerun.
+- [x] Support 11 optional adapters; keep initialization internal. See [implementation steps](cli-mvp/implementation.md#adapters-for-every-customizable-phase).
 
-No new records or schema changes. Installed demos remain unchanged.
+## Framework organization
+
+- [x] Reorganize the bundle/workflows/schemas with regression tests, historical readers and rollback. [Steps](cli-mvp/implementation.md#framework-layout-reorganization).

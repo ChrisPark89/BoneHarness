@@ -1,0 +1,101 @@
+{
+  "schema_version": "2.0.0",
+  "record_type": "Installation",
+  "kit_version": "2.0.0",
+  "configuration_id": "cfg-1",
+  "status": "CHECKED",
+  "activation": "CONFIRMED",
+  "created_at": "2026-10-11T12:56:40.672016Z",
+  "files": [
+    ".gitignore",
+    "README.md",
+    "artifacts/installation/installation-record.yaml",
+    "docs/setup.md",
+    "framework/adapters/adapter-interface.md",
+    "framework/config/repo-profile.yaml",
+    "framework/templates/development/operation.yaml",
+    "framework/templates/development/phase.yaml",
+    "framework/templates/development/specification.yaml",
+    "framework/templates/development/start.yaml",
+    "framework/templates/development/task-spec.md",
+    "framework/templates/development/verification.yaml",
+    "framework/templates/installation/installation-record.yaml",
+    "framework/templates/maintenance/harness-update-record.yaml",
+    "framework/templates/schemas/common.schema.json",
+    "framework/templates/schemas/profile.schema.json",
+    "framework/templates/schemas/records.schema.json",
+    "framework/templates/schemas/task-report.schema.json",
+    "framework/templates/schemas/workflow.schema.json",
+    "framework/templates/setup.md",
+    "framework/tools/README.md",
+    "framework/tools/check.py",
+    "framework/tools/context.py",
+    "framework/tools/context_reader.py",
+    "framework/tools/harness_check/__init__.py",
+    "framework/tools/harness_check/checks.py",
+    "framework/tools/harness_check/cli.py",
+    "framework/tools/harness_check/loader.py",
+    "framework/tools/harness_check/report.py",
+    "framework/tools/harness_check/schemas.py",
+    "framework/tools/harness_io/__init__.py",
+    "framework/tools/harness_io/journal.py",
+    "framework/tools/harness_io/loader.py",
+    "framework/tools/harness_io/schemas.py",
+    "framework/tools/harness_io/source_inventory.py",
+    "framework/tools/journal.py",
+    "framework/tools/report.py",
+    "framework/tools/reporting/__init__.py",
+    "framework/tools/reporting/evidence.py",
+    "framework/tools/reporting/render.py",
+    "framework/tools/reporting/summary.py",
+    "framework/tools/requirements.lock",
+    "framework/tools/source.py",
+    "framework/workflows/context.md",
+    "framework/workflows/development/HARNESS.md",
+    "framework/workflows/development/journal-protocol.md",
+    "framework/workflows/development/workflow.yaml",
+    "framework/workflows/maintenance/harness-maintenance.md",
+    "framework/workflows/maintenance/maintenance-workflow.yaml",
+    "framework/workflows/recovery.md",
+    "framework/workflows/setup.md",
+    "framework/workflows/source-evidence.md",
+    "framework/workflows/verification-rules.md"
+  ],
+  "checks": [
+    {
+      "name": "structure",
+      "result": "PASS",
+      "reason": "check.py --repo-root /Users/jp/Documents/Codex/demo reported Structure: PASS; all required files present and schemas valid.",
+      "evidence": [
+        "framework/tools/check.py",
+        "framework/config/repo-profile.yaml"
+      ]
+    },
+    {
+      "name": "python_helpers",
+      "result": "PASS",
+      "reason": "Python 3.14.0 at .harness/.venv/bin/python; pip install from requirements.lock succeeded; pip check reports no broken requirements.",
+      "evidence": [
+        "framework/tools/requirements.lock"
+      ]
+    },
+    {
+      "name": "connections",
+      "result": "PASS",
+      "reason": "All six adapters COMPATIBLE via direct commands: node --check (preflight, exit 0), npm run build (exit 0), npm test (1 pass 0 fail). research and final_review via direct file read. pattern_search via grep.",
+      "evidence": [
+        "framework/config/repo-profile.yaml",
+        "framework/workflows/development/workflow.yaml"
+      ]
+    },
+    {
+      "name": "activation",
+      "result": "PASS",
+      "reason": "README.md and framework/workflows/development/HARNESS.md explicitly loaded during installation session.",
+      "evidence": [
+        "README.md",
+        "framework/workflows/development/HARNESS.md"
+      ]
+    }
+  ]
+}

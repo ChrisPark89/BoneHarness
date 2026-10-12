@@ -1,18 +1,36 @@
 # BoneHarness builder kit
 
-Give this kit to an LLM to install a harness in your repository.
+Requires **Node.js 22+**. No Python or environment activation.
 
-1. Copy the [installation prompt](installer/bootstrap-prompt.md); fill in the repository and kit paths.
-2. Let the LLM follow the [installation guide](INSTALLER_SPEC.md). Python 3.11+ creates the scaffold; [dependency instructions](templates/runtime/framework/tools/README.md) prepare its helpers.
-3. Read the generated `.harness/docs/setup.md`: can you begin, what needs attention, and what comes next?
-4. Give the LLM a task and point it to `.harness/README.md`. Review the resulting short task report.
+Build and install from source:
 
-| Installed location | Purpose |
+```sh
+npm ci
+npm run build
+npm install -g ./builder-kit
+```
+
+Inside your repository:
+
+```sh
+bh init
+```
+
+`bh init` prints a prompt for your LLM to configure adapters. Follow it, then run `bh doctor` to see readiness and gaps. Alternatively, use the [installation prompt](installer/bootstrap-prompt.md).
+
+| Command | Purpose |
 |---|---|
-| `.harness/docs/` | Human setup, task and update summaries |
-| `.harness/framework/` | Instructions, connections and tools |
-| `.harness/artifacts/` | Supporting records and evidence |
+| `bh status` | Readiness and task IDs |
+| `bh status --task ID` | Phases, reviews, results and evidence |
+| `bh doctor` | Fresh setup checks and remedies |
+| `bh config` | Connections and review settings |
+| `bh update --dry-run` | Preview applying your newer BoneHarness kit |
+| `bh update --yes` | Apply kit changes; preserve settings/history |
 
-Missing tools may delay particular phases; the setup summary must name them. Users may explicitly skip phases except specification acceptance and final verification. Compatibility does not prove tool quality.
+[Change tools/settings](harness/framework/workflows/maintenance/harness-maintenance.md) · [Update BoneHarness](harness/framework/workflows/updates/update-boneharness.md). Get the newer kit before running `bh update`.
 
-Only `builder-kit/` is distributed. Keep an existing installation and use its maintenance guide for updates.
+Use `--repo PATH`, `--help` or `--json` as needed. From a built checkout, `node builder-kit/dist/bh.cjs` also works.
+
+Missing optional adapters affect their phases only. Users authorize skips; specification acceptance and final verification remain mandatory.
+
+Unsupported updates stop unchanged; Python installations need a separate migration. Daily CLI use is optional: ask the LLM for recorded results.

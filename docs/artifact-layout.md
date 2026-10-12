@@ -1,36 +1,37 @@
 # BoneHarness layout
 
 ```text
-.harness/
-  README.md
-  docs/                        # HUMAN READING
-    setup.md
-    development/<task>/        # spec.md, report.md
-    maintenance/<update>.md
-  framework/                   # INSTALLED DEFINITIONS
-    config/                    # readable adapter profile
-    workflows/                 # guides and phase definitions
-    adapters/                  # how skills fit
-    templates/                 # records and schemas
-    tools/                     # recording, parsing and checks
-  artifacts/                   # PROCESS RECORDS
-    installation/
-    configurations/
-    development/<task>/        # history, report data, evidence
-    maintenance/<update>/      # update records and evidence
+builder-kit/
+  harness/                        # files installed into .harness/
+    README.md                     # navigation
+    framework/
+      config/                     # repository settings
+      workflows/
+        setup/                    # first configuration
+        development/              # development tasks and verification
+        maintenance/              # change tools/settings
+        updates/                  # update BoneHarness
+        shared/                   # adapter connection, context, recovery
+      templates/
+        installation/             # blank setup records
+        development/              # blank specifications and task records
+        maintenance/              # blank settings-change records
+      schemas/                    # machine validation definitions
+      tools/                      # helper instructions
+  src/                            # implementation
+  dist/                           # CLI and helpers; helpers installed into tools/
 ```
 
-## What to read
+Generated inside the target repository:
 
-| File | Question answered |
+| Location | Purpose |
 |---|---|
-| `README.md` | Where do I start? |
-| `docs/setup.md` | Can I begin? Which phase will wait? What must I do? |
-| `framework/config/repo-profile.yaml` | Which adapters are connected and compatible? |
-| Task `spec.md` | What must this task achieve? |
-| Task `report.md` | What passed, failed or was skipped? |
-| Maintenance summary | What changed, and what remains unresolved? |
+| `.harness/README.md` | Start here |
+| `.harness/framework/` | Installed guides, settings, templates and tools |
+| `.harness/docs/development/<task>/` | Human specifications; optional exports |
+| `.harness/artifacts/installation/` | Setup checks and kit receipt |
+| `.harness/artifacts/configurations/` | Immutable task configuration captures |
+| `.harness/artifacts/development/<task>/` | Task history, results and evidence |
+| `.harness/artifacts/maintenance/<update>/` | Changes, checks and recovery files |
 
-Human pages stay within 200 words and support a decision. Python setup and pinned dependencies live in `framework/tools/`; a local environment stays in `.harness/.venv/`. Follow evidence links only when investigating.
-
-The LLM uses the framework and parsed records. Avoid placeholder documents and routine reporter console logs. There is no separate mutable `state.json`: progress is derived from history.
+Use chat or `bh status` for results; inspect artifacts when diagnosing. Existing task captures retain their original paths. Compatible updates reorganize managed files while preserving settings and history.

@@ -1,0 +1,692 @@
+[
+  {
+    "original": "test_cli_init.InitTests.test_help_and_version",
+    "typescript": "InitTests.test_help_and_version",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_init.InitTests.test_init_gaps_defaults_and_receipt",
+    "typescript": "InitTests.test_init_gaps_defaults_and_receipt",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_init.InitTests.test_no_automatic_human_status_pages",
+    "typescript": "InitTests.test_no_automatic_human_status_pages",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_init.InitTests.test_release_identity_preserves_unicode_paths",
+    "typescript": "InitTests.test_release_identity_preserves_unicode_paths",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_packaging.Packaging.test_wheel_contains_kit_and_runs_outside_checkout",
+    "typescript": "Packaging.test_wheel_contains_kit_and_runs_outside_checkout",
+    "file": "tests/typescript/packaging.test.ts",
+    "adaptation": "npm pack and isolated npm install replace wheel build/install; preserve external execution and package-content checks."
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_reviews_multiple_tasks_export_and_read_only_status",
+    "typescript": "TaskViews.test_reviews_multiple_tasks_export_and_read_only_status",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_completed_history_stays_closed_and_pending_reviews_survive_update",
+    "typescript": "TaskViews.test_completed_history_stays_closed_and_pending_reviews_survive_update",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_unfinished_review_survives_and_open_operation_blocks",
+    "typescript": "TaskViews.test_unfinished_review_survives_and_open_operation_blocks",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_open_operations_and_unknown_records_block_update",
+    "typescript": "TaskViews.test_open_operations_and_unknown_records_block_update",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_update_guard_blocks_helpers_and_releases_after_failure",
+    "typescript": "TaskViews.test_update_guard_blocks_helpers_and_releases_after_failure",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_missing_completion_report_after_source_drift_is_unknown",
+    "typescript": "TaskViews.test_missing_completion_report_after_source_drift_is_unknown",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_tasks.TaskViews.test_failure_evidence_is_linked_after_repair",
+    "typescript": "TaskViews.test_failure_evidence_is_linked_after_repair",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_same_release_and_preview_do_not_write",
+    "typescript": "UpdateTests.test_same_release_and_preview_do_not_write",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_profile_history_unknown_files_and_old_pages_survive",
+    "typescript": "UpdateTests.test_profile_history_unknown_files_and_old_pages_survive",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_conflicts_unsupported_and_missing_receipt_stop_unchanged",
+    "typescript": "UpdateTests.test_conflicts_unsupported_and_missing_receipt_stop_unchanged",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_failure_restores_and_interruption_can_be_recovered",
+    "typescript": "UpdateTests.test_failure_restores_and_interruption_can_be_recovered",
+    "file": "tests/typescript/update.test.ts",
+    "adaptation": "Terminate a real child process at publication/rollback boundaries instead of raising KeyboardInterrupt."
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_recovery_preserves_later_edits_and_blocks_writers",
+    "typescript": "UpdateTests.test_recovery_preserves_later_edits_and_blocks_writers",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_candidate_validation_and_preview_race_leave_installation_unchanged",
+    "typescript": "UpdateTests.test_candidate_validation_and_preview_race_leave_installation_unchanged",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_verified_baseline_can_establish_ownership",
+    "typescript": "UpdateTests.test_verified_baseline_can_establish_ownership",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_interrupted_rollback_does_not_leave_false_published_record",
+    "typescript": "UpdateTests.test_interrupted_rollback_does_not_leave_false_published_record",
+    "file": "tests/typescript/update.test.ts",
+    "adaptation": "Terminate a real child process at publication/rollback boundaries instead of raising KeyboardInterrupt."
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_profile_comments_and_unfinished_manual_update",
+    "typescript": "UpdateTests.test_profile_comments_and_unfinished_manual_update",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_update.UpdateTests.test_unowned_collision_symlink_and_unknown_format_are_refused",
+    "typescript": "UpdateTests.test_unowned_collision_symlink_and_unknown_format_are_refused",
+    "file": "tests/typescript/update.test.ts"
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_status_config_read_only_and_empty_task_list",
+    "typescript": "ViewTests.test_status_config_read_only_and_empty_task_list",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_doctor_reports_optional_gaps_without_failure",
+    "typescript": "ViewTests.test_doctor_reports_optional_gaps_without_failure",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_doctor_reports_structural_failure",
+    "typescript": "ViewTests.test_doctor_reports_structural_failure",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_invalid_task_and_path_are_clear_errors",
+    "typescript": "ViewTests.test_invalid_task_and_path_are_clear_errors",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_bad_configuration_is_not_a_traceback",
+    "typescript": "ViewTests.test_bad_configuration_is_not_a_traceback",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_missing_dependencies_still_return_doctor_diagnostics",
+    "typescript": "ViewTests.test_missing_dependencies_still_return_doctor_diagnostics",
+    "file": "tests/typescript/cli.test.ts",
+    "adaptation": "Bundled runtime availability replaces Python site-package and requirements-lock checks; preserve actionable environment and structural diagnostics."
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_missing_requirements_retains_structural_and_environment_findings",
+    "typescript": "ViewTests.test_missing_requirements_retains_structural_and_environment_findings",
+    "file": "tests/typescript/cli.test.ts",
+    "adaptation": "Bundled runtime availability replaces Python site-package and requirements-lock checks; preserve actionable environment and structural diagnostics."
+  },
+  {
+    "original": "test_cli_views.ViewTests.test_doctor_checks_new_helpers_after_configuration_changes",
+    "typescript": "ViewTests.test_doctor_checks_new_helpers_after_configuration_changes",
+    "file": "tests/typescript/cli.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_empty_output_is_captured_before_phase_judgment",
+    "typescript": "CommandTests.test_empty_output_is_captured_before_phase_judgment",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_rewritten_empty_output_cannot_be_registered_as_success",
+    "typescript": "CommandTests.test_rewritten_empty_output_cannot_be_registered_as_success",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_manual_command_completion_is_refused",
+    "typescript": "CommandTests.test_manual_command_completion_is_refused",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_nonzero_exit_preserves_streams_and_does_not_pass",
+    "typescript": "CommandTests.test_nonzero_exit_preserves_streams_and_does_not_pass",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_binary_output_keeps_original_bytes",
+    "typescript": "CommandTests.test_binary_output_keeps_original_bytes",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_stale_context_and_changed_source_prevent_dispatch",
+    "typescript": "CommandTests.test_stale_context_and_changed_source_prevent_dispatch",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_failed_prerequisite_after_intent_prevents_dispatch",
+    "typescript": "CommandTests.test_failed_prerequisite_after_intent_prevents_dispatch",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_closed_command_cannot_execute_twice",
+    "typescript": "CommandTests.test_closed_command_cannot_execute_twice",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_existing_result_is_never_overwritten_or_executed",
+    "typescript": "CommandTests.test_existing_result_is_never_overwritten_or_executed",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_launch_error_is_not_success",
+    "typescript": "CommandTests.test_launch_error_is_not_success",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_timeout_preserves_partial_output_and_requires_reconciliation",
+    "typescript": "CommandTests.test_timeout_preserves_partial_output_and_requires_reconciliation",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_command.CommandTests.test_result_for_another_operation_cannot_support_completion",
+    "typescript": "CommandTests.test_result_for_another_operation_cannot_support_completion",
+    "file": "tests/typescript/command.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_standard_route_completes",
+    "typescript": "DevelopmentTests.test_standard_route_completes",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_explicit_skips_complete_without_fabricating_success",
+    "typescript": "DevelopmentTests.test_explicit_skips_complete_without_fabricating_success",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_required_phases_cannot_skip",
+    "typescript": "DevelopmentTests.test_required_phases_cannot_skip",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_pre_spec_skips_need_explicit_acceptance_reconciliation",
+    "typescript": "DevelopmentTests.test_pre_spec_skips_need_explicit_acceptance_reconciliation",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_skip_does_not_waive_accepted_criterion",
+    "typescript": "DevelopmentTests.test_skip_does_not_waive_accepted_criterion",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_fixtures_and_missing_approval_refused",
+    "typescript": "DevelopmentTests.test_fixtures_and_missing_approval_refused",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_unknown_operation_blocks_skip_until_actual_reconciliation",
+    "typescript": "DevelopmentTests.test_unknown_operation_blocks_skip_until_actual_reconciliation",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_closed_operation_cannot_replace_failure",
+    "typescript": "DevelopmentTests.test_closed_operation_cannot_replace_failure",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_operation_cannot_satisfy_another_phase",
+    "typescript": "DevelopmentTests.test_operation_cannot_satisfy_another_phase",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_wrong_adapter_cannot_dispatch",
+    "typescript": "DevelopmentTests.test_wrong_adapter_cannot_dispatch",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_source_change_invalidates_prerequisites_and_completion",
+    "typescript": "DevelopmentTests.test_source_change_invalidates_prerequisites_and_completion",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_stale_context_is_refused",
+    "typescript": "DevelopmentTests.test_stale_context_is_refused",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_spec_revision_reopens_work_without_reusing_old_success",
+    "typescript": "DevelopmentTests.test_spec_revision_reopens_work_without_reusing_old_success",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_timestamp_requires_valid_string",
+    "typescript": "DevelopmentTests.test_timestamp_requires_valid_string",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_report_retains_failure_links_and_original_bytes",
+    "typescript": "DevelopmentTests.test_report_retains_failure_links_and_original_bytes",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_unknown_phase_refused_without_append",
+    "typescript": "DevelopmentTests.test_unknown_phase_refused_without_append",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_format_one_explicitly_refused",
+    "typescript": "DevelopmentTests.test_format_one_explicitly_refused",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_terminal_reconciliation_can_arrive_after_specification_changes",
+    "typescript": "DevelopmentTests.test_terminal_reconciliation_can_arrive_after_specification_changes",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_configuration_is_pinned_per_task",
+    "typescript": "DevelopmentTests.test_configuration_is_pinned_per_task",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_storage_symlinks_refused_before_external_directory_creation",
+    "typescript": "DevelopmentTests.test_storage_symlinks_refused_before_external_directory_creation",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_initial_source_is_captured",
+    "typescript": "DevelopmentTests.test_initial_source_is_captured",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_all_optional_specification_refused",
+    "typescript": "DevelopmentTests.test_all_optional_specification_refused",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_development.DevelopmentTests.test_unsupported_intent_cannot_be_laundered_by_terminal_record",
+    "typescript": "DevelopmentTests.test_unsupported_intent_cannot_be_laundered_by_terminal_record",
+    "file": "tests/typescript/development.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_fresh_install_is_compact_and_has_no_readiness_claim",
+    "typescript": "InstallationTests.test_fresh_install_is_compact_and_has_no_readiness_claim",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_existing_harness_is_never_overwritten",
+    "typescript": "InstallationTests.test_existing_harness_is_never_overwritten",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_checker_is_read_only",
+    "typescript": "InstallationTests.test_checker_is_read_only",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_format_one_profile_is_rejected",
+    "typescript": "InstallationTests.test_format_one_profile_is_rejected",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_compatible_requires_connection_and_evidence",
+    "typescript": "InstallationTests.test_compatible_requires_connection_and_evidence",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_compatible_evidence_is_checked_without_executing_adapter",
+    "typescript": "InstallationTests.test_compatible_evidence_is_checked_without_executing_adapter",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_compatible_profile_cannot_cite_itself",
+    "typescript": "InstallationTests.test_compatible_profile_cannot_cite_itself",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_plain_note_is_not_a_structured_assessment",
+    "typescript": "InstallationTests.test_plain_note_is_not_a_structured_assessment",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_assessment_must_match_adapter_and_connection",
+    "typescript": "InstallationTests.test_assessment_must_match_adapter_and_connection",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_assessment_needs_observations_and_passing_conclusion",
+    "typescript": "InstallationTests.test_assessment_needs_observations_and_passing_conclusion",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_execution_requires_command_exit_and_output",
+    "typescript": "InstallationTests.test_execution_requires_command_exit_and_output",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_failed_command_can_have_compatible_interface",
+    "typescript": "InstallationTests.test_failed_command_can_have_compatible_interface",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_silent_command_output_is_recorded_explicitly",
+    "typescript": "InstallationTests.test_silent_command_output_is_recorded_explicitly",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_review_cannot_include_execution_fields",
+    "typescript": "InstallationTests.test_review_cannot_include_execution_fields",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_published_maintenance_assessment_is_supported",
+    "typescript": "InstallationTests.test_published_maintenance_assessment_is_supported",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_assessment_does_not_cite_itself_or_profile_as_support",
+    "typescript": "InstallationTests.test_assessment_does_not_cite_itself_or_profile_as_support",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_empty_or_duplicate_assessments_are_rejected",
+    "typescript": "InstallationTests.test_empty_or_duplicate_assessments_are_rejected",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_unchecked_maintenance_cannot_support_compatible",
+    "typescript": "InstallationTests.test_unchecked_maintenance_cannot_support_compatible",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_unassessed_connection_does_not_need_assessment",
+    "typescript": "InstallationTests.test_unassessed_connection_does_not_need_assessment",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_captured_user_installation_fails_evidence_checks",
+    "typescript": "InstallationTests.test_captured_user_installation_fails_evidence_checks",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_evidence_cannot_escape_harness",
+    "typescript": "InstallationTests.test_evidence_cannot_escape_harness",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_evidence_symlink_cannot_escape_harness",
+    "typescript": "InstallationTests.test_evidence_symlink_cannot_escape_harness",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_missing_runtime_file_fails_structure",
+    "typescript": "InstallationTests.test_missing_runtime_file_fails_structure",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_duplicate_profile_keys_are_rejected",
+    "typescript": "InstallationTests.test_duplicate_profile_keys_are_rejected",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_legacy_profile_fields_are_not_silently_accepted",
+    "typescript": "InstallationTests.test_legacy_profile_fields_are_not_silently_accepted",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_runtime_modules_remain_required_after_configuration_change",
+    "typescript": "InstallationTests.test_runtime_modules_remain_required_after_configuration_change",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_staged_addition_does_not_require_future_file",
+    "typescript": "InstallationTests.test_staged_addition_does_not_require_future_file",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_malformed_update_path_is_a_diagnostic",
+    "typescript": "InstallationTests.test_malformed_update_path_is_a_diagnostic",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_staged_update_checks_base_bytes",
+    "typescript": "InstallationTests.test_staged_update_checks_base_bytes",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_publication_checks_actual_after_bytes",
+    "typescript": "InstallationTests.test_publication_checks_actual_after_bytes",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_update_cannot_mutate_pinned_task_configuration",
+    "typescript": "InstallationTests.test_update_cannot_mutate_pinned_task_configuration",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_activation_requires_observation_evidence",
+    "typescript": "InstallationTests.test_activation_requires_observation_evidence",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_mandatory_phases_cannot_be_relabeled_optional",
+    "typescript": "InstallationTests.test_mandatory_phases_cannot_be_relabeled_optional",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_setup_context_is_concise_read_only_and_format_two",
+    "typescript": "InstallationTests.test_setup_context_is_concise_read_only_and_format_two",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_long_context_has_explicit_bounded_continuation",
+    "typescript": "InstallationTests.test_long_context_has_explicit_bounded_continuation",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_started_task_context_selects_initialization",
+    "typescript": "InstallationTests.test_started_task_context_selects_initialization",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_context_rejects_old_profile",
+    "typescript": "InstallationTests.test_context_rejects_old_profile",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_context_missing_task_is_controlled",
+    "typescript": "InstallationTests.test_context_missing_task_is_controlled",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_context_entry_selection_requires_task",
+    "typescript": "InstallationTests.test_context_entry_selection_requires_task",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_installation.InstallationTests.test_human_entry_pages_are_short",
+    "typescript": "InstallationTests.test_human_entry_pages_are_short",
+    "file": "tests/typescript/installation.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_forbidden_yaml_constructs_and_ambiguous_scalars",
+    "typescript": "LoaderTests.test_forbidden_yaml_constructs_and_ambiguous_scalars",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_json_duplicate_nonfinite_overflow_and_root_scalars",
+    "typescript": "LoaderTests.test_json_duplicate_nonfinite_overflow_and_root_scalars",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_utf8_crlf_quoted_dates_explicit_types_and_acyclic_alias",
+    "typescript": "LoaderTests.test_utf8_crlf_quoted_dates_explicit_types_and_acyclic_alias",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_paths_rejected_before_outside_content_read",
+    "typescript": "LoaderTests.test_paths_rejected_before_outside_content_read",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_unreadable_file_distinct_from_malformed",
+    "typescript": "LoaderTests.test_unreadable_file_distinct_from_malformed",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_schema_remote_reference_is_never_retrieved",
+    "typescript": "LoaderTests.test_schema_remote_reference_is_never_retrieved",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_schema_datetime_checks_calendar",
+    "typescript": "LoaderTests.test_schema_datetime_checks_calendar",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_unused_local_schema_reference_must_resolve_fragment",
+    "typescript": "LoaderTests.test_unused_local_schema_reference_must_resolve_fragment",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_invalid_schema_definition_is_classified_as_input_error",
+    "typescript": "LoaderTests.test_invalid_schema_definition_is_classified_as_input_error",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.LoaderTests.test_transitive_schema_refs_resolve_relative_to_declaring_file",
+    "typescript": "LoaderTests.test_transitive_schema_refs_resolve_relative_to_declaring_file",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_stable_capture_is_read_only_and_valid",
+    "typescript": "SourceInventoryTests.test_stable_capture_is_read_only_and_valid",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_changes_additions_and_deletions_change_identity",
+    "typescript": "SourceInventoryTests.test_changes_additions_and_deletions_change_identity",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_comparison_accepts_empty_and_missing_scope_but_capture_refuses",
+    "typescript": "SourceInventoryTests.test_comparison_accepts_empty_and_missing_scope_but_capture_refuses",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_explicit_exclusions_are_stable",
+    "typescript": "SourceInventoryTests.test_explicit_exclusions_are_stable",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_unsafe_and_ambiguous_scopes_are_rejected",
+    "typescript": "SourceInventoryTests.test_unsafe_and_ambiguous_scopes_are_rejected",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_external_symlink_is_not_read",
+    "typescript": "SourceInventoryTests.test_external_symlink_is_not_read",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_io.SourceInventoryTests.test_bad_digest_and_duplicate_paths_are_rejected",
+    "typescript": "SourceInventoryTests.test_bad_digest_and_duplicate_paths_are_rejected",
+    "file": "tests/typescript/io.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_default_specification_waits_for_human",
+    "typescript": "ReviewTests.test_default_specification_waits_for_human",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_pending_review_is_visible_in_context_and_human_report",
+    "typescript": "ReviewTests.test_pending_review_is_visible_in_context_and_human_report",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_llm_mode_completes_without_human_records",
+    "typescript": "ReviewTests.test_llm_mode_completes_without_human_records",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_any_phase_can_require_review_including_final_verification",
+    "typescript": "ReviewTests.test_any_phase_can_require_review_including_final_verification",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_phase_override_can_allow_llm_review",
+    "typescript": "ReviewTests.test_phase_override_can_allow_llm_review",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_old_approval_does_not_approve_a_new_candidate",
+    "typescript": "ReviewTests.test_old_approval_does_not_approve_a_new_candidate",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_superseded_candidate_cannot_be_approved",
+    "typescript": "ReviewTests.test_superseded_candidate_cannot_be_approved",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_changed_draft_needs_new_submission",
+    "typescript": "ReviewTests.test_changed_draft_needs_new_submission",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_approval_cannot_replace_verification_evidence",
+    "typescript": "ReviewTests.test_approval_cannot_replace_verification_evidence",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_skip_uses_existing_explicit_authorization",
+    "typescript": "ReviewTests.test_skip_uses_existing_explicit_authorization",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_live_profile_edit_cannot_disable_captured_gate",
+    "typescript": "ReviewTests.test_live_profile_edit_cannot_disable_captured_gate",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_invalid_phase_in_review_settings_is_rejected",
+    "typescript": "ReviewTests.test_invalid_phase_in_review_settings_is_rejected",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_research_can_be_revised_while_specification_waits",
+    "typescript": "ReviewTests.test_research_can_be_revised_while_specification_waits",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_reviews.ReviewTests.test_changed_source_cannot_receive_old_phase_approval",
+    "typescript": "ReviewTests.test_changed_source_cannot_receive_old_phase_approval",
+    "file": "tests/typescript/reviews.test.ts"
+  },
+  {
+    "original": "test_v2_walkthrough.InstalledWalkthrough.test_documented_commands_and_actual_build_test",
+    "typescript": "InstalledWalkthrough.test_documented_commands_and_actual_build_test",
+    "file": "tests/typescript/walkthrough.test.ts"
+  }
+]

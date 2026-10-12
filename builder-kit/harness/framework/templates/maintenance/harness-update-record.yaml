@@ -1,0 +1,11 @@
+# Example only; replace sample values when recording actual work.
+schema_version: 2.0.0
+record_type: Update
+id: replace-update-id
+request: Describe the requested change.
+base_configuration: cfg-1
+candidate_configuration: cfg-2
+status: INSPECTING
+changes: []
+checks: []
+# Adapter assessments go here; follow framework/workflows/shared/adapter-interface.md.

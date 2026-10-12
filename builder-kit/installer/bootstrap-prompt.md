@@ -16,13 +16,13 @@ scripted demo runner. If .harness/ exists, inspect it and discuss updating
 it before replacing anything.
 
 You may run installation and verification commands. Prepare an isolated
-Python environment using the supplied dependency instructions if needed.
-Ask me about unresolved decisions; do not invent tools or silently skip
-phases. A direct command can be a connection; no dedicated skill is needed.
+Node.js runtime using the supplied setup instructions if needed.
+Follow .harness/framework/workflows/setup/setup.md to finish setting up this repository.
 
 Finish with a short handoff:
 - Can I start? Name any phase that will wait and what resolves it.
-- Link .harness/docs/setup.md and the adapter profile.
+- Show recorded readiness in chat; link .harness/README.md and the profile.
+- Do not generate duplicate setup/report pages.
 - Give me the next prompt to start a task through .harness/README.md.
 
 Stop after installation. Subsequent work uses the installed harness.

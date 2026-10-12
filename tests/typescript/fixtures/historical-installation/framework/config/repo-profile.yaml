@@ -1,0 +1,47 @@
+# Adapter connections; compatibility is not proof of task success.
+schema_version: "2.0.0"
+repository: "demo"
+configuration_id: cfg-1
+adapters:
+  research:
+    connection: "Direct file inspection: read src/, test/, scripts/, package.json, README.md"
+    status: COMPATIBLE
+    reason: Repository files are directly readable; no external search tool required.
+    evidence:
+      - "framework/config/repo-profile.yaml"
+      - "framework/workflows/development/HARNESS.md"
+  pattern_search:
+    connection: "Direct command: grep -r <pattern> <path> (run from demo/)"
+    status: COMPATIBLE
+    reason: Standard grep available on the platform; covers all pattern-search needs.
+    evidence:
+      - "framework/config/repo-profile.yaml"
+      - "framework/workflows/development/HARNESS.md"
+  preflight:
+    connection: "Direct command: node --check src/calculator.js (run from demo/)"
+    status: COMPATIBLE
+    reason: "Node.js syntax check via --check flag; observed exit 0 during installation."
+    evidence:
+      - "framework/config/repo-profile.yaml"
+      - "framework/workflows/development/workflow.yaml"
+  build:
+    connection: "Direct command: npm run build (run from demo/)"
+    status: COMPATIBLE
+    reason: "Runs node scripts/build.mjs; observed exit 0 and 'Built dist/calculator.js'."
+    evidence:
+      - "framework/config/repo-profile.yaml"
+      - "framework/workflows/development/workflow.yaml"
+  test:
+    connection: "Direct command: npm test (run from demo/)"
+    status: COMPATIBLE
+    reason: "Runs node --test test/calculator.test.mjs; observed 1 pass, 0 fail."
+    evidence:
+      - "framework/config/repo-profile.yaml"
+      - "framework/workflows/development/workflow.yaml"
+  final_review:
+    connection: "Direct file inspection: read changed source, dist output, and test results"
+    status: COMPATIBLE
+    reason: All outputs are files; direct read is sufficient for review.
+    evidence:
+      - "framework/config/repo-profile.yaml"
+      - "framework/workflows/development/HARNESS.md"

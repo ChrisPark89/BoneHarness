@@ -15,7 +15,7 @@ The harness guides work through visible phases, keeps supporting evidence, and p
 | Understand why files exist | [Kit explained](docs/builder-kit-explained.md) |
 | See a task report | [Report template](docs/task-report-template.md) |
 
-Humans read `.harness/docs/`. The LLM follows `.harness/framework/`. Process records stay in `.harness/artifacts/`.
+Humans review specifications in `.harness/docs/` and recorded results in chat or CLI. The LLM follows `.harness/framework/`. Process records stay in `.harness/artifacts/`.
 
 ## Maintaining this project
 
@@ -28,4 +28,4 @@ Humans read `.harness/docs/`. The LLM follows `.harness/framework/`. Process rec
 | [Research](docs/research/README.md) | Background references |
 | [Archive](archive/README.md) | Earlier designs and matching implementations |
 
-Project: [ChrisPark89/BoneHarness](https://github.com/ChrisPark89/BoneHarness). Only `builder-kit/` is distributed. The [JavaScript demo](tests/demo/README.md) shows a current installation with successful execution and failure–repair reports.
+Project: [ChrisPark89/BoneHarness](https://github.com/ChrisPark89/BoneHarness). Only `builder-kit/` is distributed. The [JavaScript demo](tests/demo/README.md) exercises successful execution and failure–repair results.

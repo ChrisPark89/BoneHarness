@@ -1,22 +1,23 @@
 # BoneHarness project tests
 
-These checks verify the distributed kit. They are not installed into other repositories.
+These checks verify the kit and are not installed into other repositories.
 
 | Location | Purpose |
 |---|---|
-| `test_v2_*.py` | Current profile, installation, development and installed CLI checks |
-| `check-documents.py` | Current documentation links and size checks |
-| `demo/` | Current format 2 installation and two controlled JavaScript scenarios |
+| `typescript/` | Installation, phases, evidence, reviews, CLI and update tests |
+| `typescript/coverage-map.json` | Original Python cases mapped to TypeScript tests |
+| `check-documents.ts` | Current documentation links and human-page limits |
+| `demo/` | Calculator and two controlled harness scenarios |
 
-Run current tests from the project root with Python 3.11+ and the kit’s declared dependencies:
+From the project root:
 
 ```sh
-python -m unittest discover -s tests -p 'test_v2_*.py' -v
-python tests/check-documents.py
+npm ci
+npm run typecheck
+npm test
+npm run check:docs
 ```
 
-Installed harnesses use their installation checker and the repository’s normal tools. They do not need this project’s test suite.
+Requires Node.js 22+. Tests use disposable directories; packaging checks install outside the checkout. Installed harnesses use their own checker and repository tools.
 
-The old suite, fixtures, conformance catalogue and matching kit are preserved in [the format 1 archive](../archive/2026-10-10-format-1.zip). They were retired because they assert the replaced record format and transition graph. Historical results are not reused as evidence for format 2.
-
-The demo runner installs the current kit only into an empty `.harness/`. Preserve previous installations before replacing them; historical records need their matching tools.
+The [conversion plan](../docs/typescript/implementation-plan.md) tracks behavior parity and additional regressions. Historical format-1 fixtures remain in [the archive](../archive/2026-10-10-format-1.zip).

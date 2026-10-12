@@ -1,0 +1,53 @@
+# Repository review settings and adapter connections.
+schema_version: "2.0.0"
+repository: example-repository
+configuration_id: cfg-1
+reviews:
+  default: HUMAN
+  phases:
+    initialization: LLM
+adapters:
+  research:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  pattern_search:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  specification:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules or delegate to the LLM; required phase.
+  verification_plan:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  implementation_plan:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  implementation:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  preflight:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  build:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  test:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
+  specification_verification:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules or delegate to the LLM; required phase.
+  final_review:
+    connection: null
+    status: ACTION_NEEDED
+    reason: Choose tools/rules, delegate to the LLM, or request a skip.
